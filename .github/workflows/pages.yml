@@ -1,0 +1,51 @@
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Rebuild diário (06h em Brasília): as etapas já encerradas saem da seção "Próximos desafios" sem precisar de novo commit.
+  schedule:
+    - cron: "0 9 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES: "true"
+      NEXT_PUBLIC_BASE_PATH: /enricovernieri
+      NEXT_PUBLIC_SITE_URL: https://plathanus-tech.github.io/enricovernieri
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Rotas de exploração (noindex) e a página de notícia interna não entram na publicação estática:
+      # as notícias atuais abrem a matéria original, e o Next exige ao menos uma página gerada por rota dinâmica.
+      - name: Remover rotas de teste
+        run: rm -rf src/app/hero-lab src/app/heroes src/app/heroes-ln src/app/heroes-ln2 src/app/historia-b src/app/quem-sou-bege src/app/v2 "src/app/noticias/[slug]"
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,201 @@
+import Image from "next/image";
+import { Button } from "./Button";
+import { Placeholder } from "./Placeholder";
+import { RaceNumber } from "./RaceNumber";
+import { Reveal } from "./Reveal";
+import { SectionHeading } from "./SectionHeading";
+import { VideoCard } from "./VideoCard";
+import { campaignVideos, sponsors, type Sponsor } from "@/content/sponsors";
+import { site, whatsappLink } from "@/content/site";
+
+const exposure = [
+  { src: "/gear/kart-plotagem.png", alt: "Plotagem do kart número 5, vista de todos os lados", label: "Kart", w: 606, h: 394 },
+  { src: "/gear/suit-front.png", alt: "Macacão de corrida do Enrico, frente", label: "Macacão", w: 311, h: 219 },
+  { src: "/gear/shirt.png", alt: "Camiseta da equipe", label: "Camisetas", w: 332, h: 275 },
+];
+
+const offers = [
+  { t: "Exposição direta", d: "A marca no kart, no macacão e nas camisetas, em competições, eventos e materiais de comunicação visual." },
+  { t: "Presença digital", d: "Postagens dedicadas nas redes sociais, menções em veículos especializados e campanhas digitais." },
+  { t: "Rede de contatos", d: "Participação em eventos e conexão com pessoas e empresas do meio, por meio do networking do piloto." },
+  { t: "Documentário oficial", d: "Previsto na proposta: produção em parceria com a produtora Gabriela Silveira, contando a trajetória do Enrico." },
+];
+
+const presence = [
+  { v: "7.500", l: "seguidores no Instagram" },
+  { v: "62", l: "horas de transmissão" },
+  { v: "410.000", l: "espectadores" },
+  { v: "30", l: "notícias em portais" },
+];
+
+// Posição de cada célula no celular (2 colunas), para manter o tabuleiro claro/escuro quando há 5 logos + o convite, que fica sempre por último.
+const mobileOrder = [0, 1, 4, 2, 3, 5];
+
+export function Sponsors() {
+  const cells: (Sponsor | "cta")[] = [...sponsors];
+  cells.push("cta");
+  const [featured, ...others] = campaignVideos;
+  return (
+    <section id="patrocinadores" aria-labelledby="patrocinadores-title" className="on-light relative bg-paper py-24 text-ink md:py-32">
+      <div className="mx-auto max-w-[1400px] px-5 md:px-10">
+        <SectionHeading eyebrow="Patrocinadores e parceiros" tone="light" className="max-w-4xl">
+          <span id="patrocinadores-title">Quem corre junto</span>
+        </SectionHeading>
+
+        {/* A. marcas parceiras */}
+        <div className="mt-14">
+          <h3 className="eyebrow border-b-2 border-ink pb-3">Marcas parceiras</h3>
+          {sponsors.length > 0 ? (
+            <ul className="mt-6 grid grid-cols-2 gap-px bg-line-light md:grid-cols-3">
+              {cells.map((cell, i) => {
+                // Alterna fundo escuro e claro como um tabuleiro, em 2 colunas (celular) e em 3 (computador).
+                const style = cells.length === 6 ? ({ "--o": mobileOrder[i] } as React.CSSProperties) : undefined;
+                const order = cells.length === 6 ? "[order:var(--o)] md:[order:0]" : "";
+                if (cell === "cta")
+                  return (
+                    <li key="cta" style={style} className={`flex min-h-40 items-center justify-center bg-mint p-6 text-ink md:min-h-48 ${order}`}>
+                      <a href="#contato" className="group text-center">
+                        <span className="eyebrow block">Seu logo aqui</span>
+                        <span className="display mt-1 block text-3xl">Seja a próxima marca</span>
+                        <span aria-hidden className="mt-1 inline-block transition-transform group-hover:translate-x-1">→</span>
+                      </a>
+                    </li>
+                  );
+                const s = cell;
+                const img = <Image src={s.logo} alt={s.name} width={s.width} height={s.height} style={{ height: s.h, width: "auto" }} className="max-w-full object-contain" />;
+                return (
+                  <li key={s.name} style={style} className={`relative flex min-h-40 items-center justify-center p-6 md:min-h-48 ${order} ${s.tone === "dark" ? "bg-ink" : "bg-paper-2"}`}>
+                    {s.href ? (
+                      <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+                        {img}
+                      </a>
+                    ) : (
+                      img
+                    )}
+                    {s.role && <span className={`eyebrow absolute left-3 top-3 text-[0.7rem] ${s.tone === "dark" ? "text-mint" : "text-mint-ink"}`}>{s.role}</span>}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="mt-6 grid gap-6 lg:grid-cols-12">
+              <div className="bg-paper-2 p-7 md:p-10 lg:col-span-5">
+                <p className="display text-3xl md:text-4xl">O seu logo pode estar aqui</p>
+                <p className="mt-3 text-mute-light">
+                  Estamos reunindo as marcas que apoiam a trajetória do Enrico para apresentá-las com o destaque que merecem.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 lg:col-span-7 lg:grid-cols-4">
+                {[0, 1, 2, 3].map((i) => (
+                  <Placeholder key={i} tone="light" className="aspect-[3/2] !p-3 text-xs">
+                    Logo original (SVG ou PNG)
+                  </Placeholder>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* onde a marca aparece */}
+        <div className="mt-14 bg-ink p-6 text-white md:p-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-4">
+              <p className="eyebrow text-mint">Onde a marca aparece</p>
+              <p className="display mt-2 text-4xl md:text-5xl">Kart, macacão e camisetas</p>
+              <p className="mt-3 text-mute-dark">Os espaços previstos na proposta de patrocínio, em todas as competições e eventos.</p>
+            </div>
+            <ul className="grid grid-cols-3 gap-3 lg:col-span-8">
+              {exposure.map((e, i) => (
+                <Reveal as="li" key={e.src} delay={i * 0.1}>
+                  <figure>
+                    <div className="relative aspect-[4/3] overflow-hidden bg-white">
+                      <Image src={e.src} alt={e.alt} fill sizes="(min-width:1024px) 22vw, 30vw" className="object-contain p-1" />
+                    </div>
+                    <figcaption className="eyebrow mt-2 text-mint">{e.label}</figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* B. conteúdos e campanhas */}
+        <div className="mt-20">
+          <h3 className="eyebrow border-b-2 border-ink pb-3">Conteúdos e campanhas</h3>
+          <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
+            <p className="display text-4xl md:text-5xl lg:col-span-6">Também diante das câmeras</p>
+            <p className="text-lg text-mute-light lg:col-span-6">
+              O Enrico já participou de campanhas e produziu vídeos para marcas. Aqui estão alguns desses trabalhos, publicados pelas próprias marcas, como portfólio de quem sabe falar com a câmera.
+            </p>
+          </div>
+
+          {campaignVideos.length > 0 ? (
+            <>
+              <ul className="mt-10 grid gap-8 md:grid-cols-3">
+                {campaignVideos.map((v) => (
+                  <li key={v.id}>
+                    <VideoCard video={v} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div className="mt-8 grid gap-4">
+              <div className="bg-paper-2 p-7 md:p-10">
+                <p className="display text-3xl">Vídeos em breve</p>
+                <p className="mt-2 text-mute-light">Os trabalhos com marcas serão publicados aqui, cada um com a campanha e o link para o conteúdo original.</p>
+              </div>
+              <Placeholder tone="light" className="aspect-[21/9]">
+                Destaque principal: capa, marca, título e vídeo (Instagram, YouTube, Vimeo ou arquivo). Preencher em <code>src/content/sponsors.ts</code>.
+              </Placeholder>
+            </div>
+          )}
+        </div>
+
+        {/* C. seja um patrocinador */}
+        <div className="relative mt-24 overflow-hidden bg-ink text-white">
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 select-none text-[22rem] leading-none text-mint/[0.08]">
+            <RaceNumber value={5} outline />
+          </div>
+          <div className="relative grid gap-10 p-7 md:p-12 lg:grid-cols-12 lg:gap-14 lg:p-16">
+            <div className="lg:col-span-6">
+              <p className="eyebrow text-mint">Seja um patrocinador</p>
+              <h3 className="display mt-3 text-[clamp(2.6rem,6vw,5rem)]">Faça parte dessa trajetória</h3>
+              <p className="mt-5 max-w-xl text-lg text-white/85">
+                Patrocinar o Enrico é apoiar o desenvolvimento esportivo de um jovem piloto e associar a sua marca a valores como dedicação, estratégia e superação, ao lado de uma história real que está sendo construída pista a pista.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button href={whatsappLink()} external>Conversar sobre patrocínio</Button>
+                <Button href={site.mediaKit.url} variant="ghost-dark" icon="download" download>Baixar mídia kit</Button>
+              </div>
+              <p className="mt-4 text-sm text-mute-dark">O contato é feito diretamente com os responsáveis pelo piloto.</p>
+            </div>
+            <div className="lg:col-span-6">
+              <p className="eyebrow text-mute-dark">O que a proposta prevê</p>
+              <ul className="mt-4 grid gap-px bg-line-dark sm:grid-cols-2">
+                {offers.map((o) => (
+                  <li key={o.t} className="bg-ink p-5">
+                    <p className="display text-2xl text-mint">{o.t}</p>
+                    <p className="mt-1 text-sm text-white/75">{o.d}</p>
+                  </li>
+                ))}
+              </ul>
+              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line-dark pt-6 sm:grid-cols-4">
+                {presence.map((p) => (
+                  <div key={p.l}>
+                    <dt className="sr-only">{p.l}</dt>
+                    <dd>
+                      <p className="display text-3xl text-white">+{p.v}</p>
+                      <p className="eyebrow mt-1 text-[0.75rem] text-mute-dark">{p.l}</p>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-3 text-xs text-mute-dark">Dados informados na apresentação de patrocínio do piloto; sujeitos a atualização.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
