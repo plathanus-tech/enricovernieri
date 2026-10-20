@@ -266,7 +266,7 @@ function buildTabs(next?: string): Tab[] {
       id: "preparacao",
       label: "Preparação",
       title: "Como ele se prepara",
-      image: { src: "/photos/paddock-mechanic.png", alt: "Enrico de capacete, no kart, enquanto um homem de boné confere o equipamento ao lado (foto em preto e branco)", position: "50% 50%" },
+      image: { src: "/photos/paddock-mechanic.png", alt: "Enrico de capacete, no kart, enquanto o mecânico da equipe, de boné, confere o equipamento ao lado (foto em preto e branco)", position: "50% 50%" },
       slots: [
         { label: "Treinos desde", value: pilot.trainingSince },
         { label: "Equipe", value: "Reis Motorsports" },
