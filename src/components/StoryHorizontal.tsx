@@ -29,7 +29,7 @@ function Fact({ p, i, dark, children }: { p: MotionValue<number>; i: number; dar
   const opacity = useTransform(p, [start, start - 0.12], [0, 1]);
   const x = useTransform(p, [start, start - 0.12], [60, 0]);
   return (
-    <motion.li style={{ opacity, x }} className={`flex items-center gap-3 border-b py-[clamp(0.15rem,0.7svh,0.5rem)] font-display text-[clamp(0.9rem,2.5svh,1.25rem)] font-bold italic uppercase leading-tight tracking-wide ${dark ? "border-line-dark" : "border-line-light"}`}>
+    <motion.li style={{ opacity, x }} className={`flex items-center gap-3 border-b py-[clamp(0.15rem,0.7svh,0.5rem)] font-display text-base font-bold md:text-[clamp(0.9rem,2.5svh,1.25rem)] italic uppercase leading-tight tracking-wide ${dark ? "border-line-dark" : "border-line-light"}`}>
       <span aria-hidden className={`h-2.5 w-2.5 shrink-0 -skew-x-12 ${dark ? "bg-mint" : "bg-ink"}`} />
       {children}
     </motion.li>
@@ -139,7 +139,7 @@ function ChapterPanel({ c, x, vw, register, still = false }: { c: Chapter; x: Mo
           <motion.p style={{ opacity: titleO }} className={`eyebrow ${dark ? "text-mint" : "text-mint-ink"}`}>
             {c.kicker} {c.numeral ?? ""} {c.word && c.numeral ? c.word : ""}
           </motion.p>
-          <motion.h3 id={`h-${c.id}`} style={{ opacity: titleO, y: titleY }} className="display mt-2 text-[clamp(1.6rem,min(4.2vw,6.5svh),3.6rem)]">
+          <motion.h3 id={`h-${c.id}`} style={{ opacity: titleO, y: titleY }} className="display mt-2 text-2xl md:text-[clamp(1.6rem,min(4.2vw,6.5svh),3.6rem)]">
             {c.title}
           </motion.h3>
           <motion.p style={{ opacity: textO, y: textY }} className={`mt-3 max-w-md text-[clamp(0.85rem,2.3svh,1.125rem)] leading-snug ${dark ? "text-white/85" : "text-mute-light"}`}>
