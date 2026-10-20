@@ -9,9 +9,9 @@ import { campaignVideos, sponsors, type Sponsor } from "@/content/sponsors";
 import { whatsappLink } from "@/content/site";
 
 const exposure = [
-  { src: "/gear/kart-plotagem.png", alt: "Arte da plotagem do kart número 5 planificada, em roxo, preto e amarelo, com os logos dos patrocinadores", label: "Kart", w: 606, h: 394 },
-  { src: "/gear/suit-front.png", alt: "Arte do macacão de corrida, roxo e preto, vista da frente e de uma manga", label: "Macacão", w: 311, h: 219 },
-  { src: "/gear/shirt.png", alt: "Camiseta preta com detalhes roxos e a marca EV Enrico Vernieri no peito", label: "Camisetas", w: 332, h: 275 },
+  { src: "/photos/kart-enrico.jpg", alt: "Enrico, de capacete verde e laranja, pilotando o kart verde número 5, com os logos dos patrocinadores na carenagem", label: "Kart", w: 1600, h: 1066, cover: true, position: "35% 50%" },
+  { src: "/photos/macacao-enrico-2.jpg", alt: "Enrico sorrindo, de macacão de corrida roxo com os logos Next e Plathanus no peito, apontando para cima com as duas mãos", label: "Macacão", w: 853, h: 807, cover: true, position: "50% 25%" },
+  { src: "/photos/vestimenta.jpg", alt: "Três pessoas posam na pista de kart com as vestimentas da equipe: uma camiseta e um boné pretos e roxos com a marca EV Enrico Vernieri e dois casacos pretos com detalhes roxos e verdes, um deles com o logo da Next", label: "Vestimentas", w: 1376, h: 768, cover: true, position: "50% 40%" },
 ];
 
 const offers = [
@@ -117,7 +117,7 @@ export function Sponsors() {
                 <Reveal as="li" key={e.src} delay={i * 0.1}>
                   <figure>
                     <div className="relative aspect-[4/3] overflow-hidden bg-white">
-                      <Image src={e.src} alt={e.alt} fill sizes="(min-width:1024px) 22vw, 30vw" className="object-contain p-1" />
+                      <Image src={e.src} alt={e.alt} fill sizes="(min-width:1024px) 22vw, 30vw" className={"cover" in e && e.cover ? "object-cover" : "object-contain p-1"} style={"position" in e ? { objectPosition: e.position } : undefined} />
                     </div>
                     <figcaption className="eyebrow mt-2 text-mint">{e.label}</figcaption>
                   </figure>

@@ -90,11 +90,12 @@ export function Achievements() {
               <figure>
                 <div className="relative aspect-[750/417] overflow-hidden rounded-md bg-ink-3">
                   <Image
-                    src="/photos/premiacao-cba.jpg"
-                    alt="Enrico de terno, segurando o troféu da CBA, diante do painel de uma cerimônia de premiação"
+                    src="/photos/cba-prize-giving.jpg"
+                    alt="Enrico de terno, segurando o troféu da CBA, diante do painel da cerimônia de premiação da CBA em São Paulo"
                     fill
                     sizes="(min-width:1024px) 55vw, 100vw"
-                    className="object-cover object-center"
+                    className="object-cover"
+                    style={{ objectPosition: "50% 45%" }}
                   />
                 </div>
                 <figcaption className="eyebrow mt-2 text-mute-light">Cerimônia de premiação da CBA, em São Paulo (30/03/2026)</figcaption>

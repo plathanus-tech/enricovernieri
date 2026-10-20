@@ -58,6 +58,7 @@ export function Header() {
   const bg = scrolled || open || !home ? "bg-ink/90 backdrop-blur-md border-b border-line-dark" : "bg-transparent";
 
   return (
+    <>
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${bg}`} style={{ height: "var(--header-h)" }}>
       <div className="mx-auto grid h-full max-w-[1400px] grid-cols-[1fr_auto] items-center gap-6 px-5 md:px-10 lg:grid-cols-[1fr_auto_1fr]">
         <Link href="/" aria-label="Enrico Vernieri, início" className="relative z-10 block shrink-0">
@@ -103,34 +104,36 @@ export function Header() {
         </div>
       </div>
 
-      {open && (
-        <div id="menu-mobile" className="fixed inset-0 top-[var(--header-h)] z-40 overflow-y-auto bg-ink px-5 pb-10 pt-8 lg:hidden">
-          <nav aria-label="Menu mobile">
-            <ul className="flex flex-col">
-              {nav.map((n, i) => (
-                <li key={n.id} className="border-b border-line-dark">
-                  <a
-                    ref={i === 0 ? firstLink : undefined}
-                    href={`${prefix}#${n.id}`}
-                    onClick={() => setOpen(false)}
-                    className="display flex min-h-16 items-center justify-between text-4xl"
-                  >
-                    {n.label}
-                    <span aria-hidden className="text-mint">→</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <a
-            href={`${prefix}#contato`}
-            onClick={() => setOpen(false)}
-            className="mt-8 flex min-h-14 items-center justify-center bg-mint px-6 font-display text-xl font-extrabold italic uppercase text-ink"
-          >
-            Seja parceiro
-          </a>
-        </div>
-      )}
     </header>
+
+    {open && (
+      <div id="menu-mobile" className="fixed inset-x-0 bottom-0 top-[var(--header-h)] z-40 overflow-y-auto overscroll-contain bg-ink px-5 pb-10 pt-6 lg:hidden [@media(max-height:640px)]:pb-6 [@media(max-height:640px)]:pt-3">
+        <nav aria-label="Menu mobile">
+          <ul className="flex flex-col">
+            {nav.map((n, i) => (
+              <li key={n.id} className="border-b border-line-dark">
+                <a
+                  ref={i === 0 ? firstLink : undefined}
+                  href={`${prefix}#${n.id}`}
+                  onClick={() => setOpen(false)}
+                  className="display flex min-h-16 items-center justify-between text-4xl [@media(max-height:640px)]:min-h-12 [@media(max-height:640px)]:text-3xl"
+                >
+                  {n.label}
+                  <span aria-hidden className="text-mint">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <a
+          href={`${prefix}#contato`}
+          onClick={() => setOpen(false)}
+          className="mt-8 flex min-h-14 items-center justify-center bg-mint px-6 font-display text-xl font-extrabold italic uppercase text-ink [@media(max-height:640px)]:mt-5"
+        >
+          Seja parceiro
+        </a>
+      </div>
+    )}
+    </>
   );
 }
