@@ -30,17 +30,4 @@ export const challenges: Challenge[] = [
     status: "Inscrições até 09/11",
     href: "https://inscricoes.cba.org.br/pt/eventos/61o-campeonato-brasileiro-de-kart-2026-61o-campeonato-brasileiro-de-kart-2026-",
   },
-  // TESTE TEMPORÁRIO: etapa fictícia só para visualizar a lista. REMOVER antes de publicar.
-  {
-    id: "teste-temporario",
-    date: "2027-03-13",
-    endDate: "2027-03-14",
-    championship: "Etapa de exemplo (teste)",
-    stage: "2ª etapa",
-    track: "Kartódromo de exemplo",
-    city: "Cidade (UF)",
-    category: "Cadete",
-    status: "Data a confirmar",
-    href: "https://www.cba.org.br",
-  },
 ];

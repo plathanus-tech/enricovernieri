@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./Button";
+import { PixSupport } from "./PixSupport";
 import { RaceNumber } from "./RaceNumber";
 import { nav, site, whatsappLink } from "@/content/site";
 import { pilot } from "@/content/pilot";
@@ -55,6 +56,7 @@ export function Contact() {
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Button href={whatsappLink()} external>Seja um parceiro</Button>
+            <PixSupport />
           </div>
 
           <ul className="mt-14 grid max-w-3xl gap-px bg-line-dark sm:grid-cols-2">
