@@ -96,7 +96,8 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
       className={`relative flex h-full w-[90vw] shrink-0 items-center px-6 pb-[5.25rem] pt-[calc(var(--header-h)+0.75rem)] md:w-[74vw] md:px-12 lg:w-[62vw] ${dark ? "bg-ink text-white" : "on-light bg-paper text-ink"}`}
     >
       <div className="flex w-full flex-col gap-3 md:gap-5">
-        <motion.div style={{ x: numeralX, opacity: numeralO }} className={`text-[clamp(2.75rem,min(10vw,14svh),8rem)] ${dark ? "text-mint" : "text-ink"}`}>
+        {/* decorativo: o ano é lido pelo texto pequeno acima do título */}
+        <motion.div aria-hidden style={{ x: numeralX, opacity: numeralO }} className={`text-[clamp(2.75rem,min(10vw,14svh),8rem)] ${dark ? "text-mint" : "text-ink"}`}>
           {c.numeral ? (
             <div className="flex items-end gap-1">
               <RaceNumber value={c.numeral} label={c.word ? `${c.numeral} ${c.word}` : c.numeral} />
