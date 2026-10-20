@@ -42,7 +42,7 @@ export const news: NewsItem[] = [
     excerpt: "Em uma edição com mais de 650 inscrições e clima instável, Enrico termina a temporada 2025 como vice-campeão brasileiro da Mirim, destacado pela consistência.",
     category: "Resultado",
     date: "2025-12-04",
-    image: { src: "/news/kartmotor-vice-2025.jpg", alt: "Enrico de capacete amarelo e verde, pilotando o kart número 5 em uma curva" },
+    image: { src: "/news/kartmotor-vice-2025.jpg", alt: "Enrico de capacete verde, laranja e azul, pilotando o kart verde número 5 em uma curva da pista" },
     externalUrl: "https://kartmotor.com.br/noticias/vice-campeao-brasileiro-na-mirim-enrico-vernieri-confirma-evolucao-como-destaque-nacional-42552",
     source: "Portal Kart Motor",
   },

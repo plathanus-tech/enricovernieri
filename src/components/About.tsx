@@ -27,7 +27,7 @@ function buildTabs(next?: string): Tab[] {
       id: "piloto",
       label: "O piloto",
       title: "Quem é o Enrico",
-      image: { src: "/photos/portrait-1.png", alt: "Retrato de Enrico Vernieri de capacete e macacão, ainda no paddock", position: "50% 22%" },
+      image: { src: "/photos/portrait-1.png", alt: "Enrico de capacete e macacão de corrida, de braços cruzados e com o olhar atento, no paddock (foto em preto e branco)", position: "50% 22%" },
       slots: [
         { label: "Nascido em", value: pilot.born },
         { label: "Cidade", value: "Palhoça (SC)" },
@@ -44,7 +44,7 @@ function buildTabs(next?: string): Tab[] {
       id: "pista",
       label: "Na pista",
       title: "Evolução volta a volta",
-      image: { src: "/photos/kart-action-1.png", alt: "Enrico acelerando no kart número 5", position: "60% 50%" },
+      image: { src: "/photos/kart-action-1.png", alt: "Enrico pilotando o kart número 5 em uma curva da pista (foto em preto e branco)", position: "60% 50%" },
       slots: [
         { label: "Estreia", value: `${pilot.debut.year}, ${pilot.debut.event}` },
         { label: "Grandes campeonatos", value: `Desde ${pilot.inTheMainChampionshipsSince}` },
@@ -66,7 +66,7 @@ function buildTabs(next?: string): Tab[] {
       id: "fora",
       label: "Fora das pistas",
       title: "Uma criança em formação",
-      image: { src: "/photos/portrait-2.png", alt: "Enrico de capacete, em pé entre os karts no paddock", position: "50% 30%", placeholder: "Foto espontânea do Enrico praticando taekwondo" },
+      image: { src: "/photos/portrait-2.png", alt: "Enrico de capacete e macacão, de braços cruzados, em pé entre os karts no paddock (foto em preto e branco)", position: "50% 30%", placeholder: "Foto espontânea do Enrico praticando taekwondo" },
       body: (
         <>
           <p>
@@ -80,7 +80,7 @@ function buildTabs(next?: string): Tab[] {
       id: "preparacao",
       label: "Preparação",
       title: "Como ele se prepara",
-      image: { src: "/photos/paddock-mechanic.png", alt: "Bastidores no paddock: ajuste no capacete antes da corrida", position: "50% 50%" },
+      image: { src: "/photos/paddock-mechanic.png", alt: "Enrico de capacete, no kart, enquanto um homem de boné confere o equipamento ao lado (foto em preto e branco)", position: "50% 50%" },
       slots: [
         { label: "Treinos desde", value: pilot.trainingSince },
         { label: "Equipe", value: "Reis Motorsports" },
@@ -98,7 +98,7 @@ function buildTabs(next?: string): Tab[] {
       id: "sonho",
       label: "O sonho",
       title: "Para onde ele vai",
-      image: { src: "/photos/kart-action-2.png", alt: "Enrico contornando uma curva com o kart número 5", position: "55% 55%" },
+      image: { src: "/photos/kart-action-2.png", alt: "Enrico contornando uma curva com o kart número 5, de capacete branco (foto em preto e branco)", position: "55% 55%" },
       slots: [
         { label: "Ídolo", value: pilot.idol },
         ...(next ? [{ label: "Próximo desafio", value: next }] : []),

@@ -9,9 +9,9 @@ import { campaignVideos, sponsors, type Sponsor } from "@/content/sponsors";
 import { whatsappLink } from "@/content/site";
 
 const exposure = [
-  { src: "/gear/kart-plotagem.png", alt: "Plotagem do kart número 5, vista de todos os lados", label: "Kart", w: 606, h: 394 },
-  { src: "/gear/suit-front.png", alt: "Macacão de corrida do Enrico, frente", label: "Macacão", w: 311, h: 219 },
-  { src: "/gear/shirt.png", alt: "Camiseta da equipe", label: "Camisetas", w: 332, h: 275 },
+  { src: "/gear/kart-plotagem.png", alt: "Arte da plotagem do kart número 5 planificada, em roxo, preto e amarelo, com os logos dos patrocinadores", label: "Kart", w: 606, h: 394 },
+  { src: "/gear/suit-front.png", alt: "Arte do macacão de corrida, roxo e preto, vista da frente e de uma manga", label: "Macacão", w: 311, h: 219 },
+  { src: "/gear/shirt.png", alt: "Camiseta preta com detalhes roxos e a marca EV Enrico Vernieri no peito", label: "Camisetas", w: 332, h: 275 },
 ];
 
 const offers = [

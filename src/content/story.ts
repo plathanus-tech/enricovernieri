@@ -42,7 +42,7 @@ export const chapters: Chapter[] = [
     title: "A paixão aparece cedo",
     text: "O amor pelo automobilismo começa ainda criança. Para o Enrico, o kart nunca foi só velocidade: é estratégia, dedicação e confiança em cada detalhe.",
     tone: "light",
-    media: { kind: "image", src: "/photos/portrait-1.png", alt: "Enrico criança, de capacete e macacão, olhando para a pista", position: "50% 25%" },
+    media: { kind: "image", src: "/photos/portrait-1.png", alt: "Enrico de capacete e macacão de corrida, de braços cruzados e com o olhar atento (foto em preto e branco)", position: "50% 25%" },
   },
   {
     id: "2021",
@@ -61,7 +61,7 @@ export const chapters: Chapter[] = [
     text: "Na Copa Ingleses, categoria Mirim, o Enrico estreia com ótimo desempenho e termina entre os primeiros colocados.",
     facts: ["4º lugar na Copa Ingleses"],
     tone: "light",
-    media: { kind: "image", src: "/photos/kart-action-1.png", alt: "Enrico acelerando no kart número 5", position: "60% 50%" },
+    media: { kind: "image", src: "/photos/kart-action-1.png", alt: "Enrico pilotando o kart número 5 em uma curva da pista (foto em preto e branco)", position: "60% 50%" },
   },
   {
     id: "2023",
@@ -71,7 +71,7 @@ export const chapters: Chapter[] = [
     text: "Desde 2023, ele disputa os principais campeonatos de kart do Brasil: Brasileiro, Sul-Brasileiro, Catarinense e Gaúcho. É também o ano do primeiro vice-campeonato.",
     facts: ["Vice-campeão da Copa Velopark", "4º no Campeonato Gaúcho", "11º no Catarinense", "15º no Sul-Brasileiro", "23º no Brasileiro"],
     tone: "dark",
-    media: { kind: "image", src: "/photos/paddock-mechanic.png", alt: "Bastidores no paddock: ajuste no capacete antes da corrida", position: "50% 50%" },
+    media: { kind: "image", src: "/photos/paddock-mechanic.png", alt: "Enrico de capacete, no kart, enquanto um homem de boné confere o equipamento ao lado (foto em preto e branco)", position: "50% 50%" },
   },
   {
     id: "2024",
@@ -81,7 +81,7 @@ export const chapters: Chapter[] = [
     text: "A evolução aparece nos resultados: dois vice-campeonatos e posições melhores nos campeonatos nacionais.",
     facts: ["Vice-campeão Catarinense", "Vice-campeão da Copa Beto Carrero", "8º no Sul-Brasileiro", "19º no Brasileiro"],
     tone: "light",
-    media: { kind: "image", src: "/photos/portrait-2.png", alt: "Enrico de capacete entre os karts no paddock", position: "50% 30%" },
+    media: { kind: "image", src: "/photos/portrait-2.png", alt: "Enrico de capacete e macacão, de braços cruzados, em pé entre os karts no paddock (foto em preto e branco)", position: "50% 30%" },
   },
   {
     id: "2025",
@@ -91,7 +91,7 @@ export const chapters: Chapter[] = [
     text: "Três títulos e o vice-campeonato brasileiro: o ápice de uma temporada de evolução constante.",
     facts: ["Vice-campeão Brasileiro", "Campeão Gaúcho", "Campeão da Copa Beto Carrero", "Campeão da Copa Sicredi Lages", "3º no Catarinense"],
     tone: "dark",
-    media: { kind: "image", src: "/photos/kart-action-2.png", alt: "Enrico contornando uma curva com o kart número 5", position: "55% 55%" },
+    media: { kind: "image", src: "/photos/kart-action-2.png", alt: "Enrico contornando uma curva com o kart número 5, de capacete branco (foto em preto e branco)", position: "55% 55%" },
   },
   {
     id: "2026",
