@@ -55,7 +55,6 @@ export function Contact() {
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Button href={whatsappLink()} external>Seja um parceiro</Button>
-            <Button href={site.mediaKit.url} variant="ghost-dark" icon="download" download>Baixar mídia kit</Button>
           </div>
 
           <ul className="mt-14 grid max-w-3xl gap-px bg-line-dark sm:grid-cols-2">
@@ -114,9 +113,6 @@ export function Contact() {
                   </a>
                 </li>
               ))}
-              <li>
-                <a href={withBase(site.mediaKit.url)} download className="inline-flex min-h-11 items-center font-display text-lg font-bold italic uppercase tracking-wide text-white/85 hover:text-mint">Mídia kit</a>
-              </li>
               <li>
                 <Link href="/noticias" className="inline-flex min-h-11 items-center font-display text-lg font-bold italic uppercase tracking-wide text-white/85 hover:text-mint">Todas as notícias</Link>
               </li>

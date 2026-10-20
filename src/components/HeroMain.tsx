@@ -1,19 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import type { PointerEvent } from "react";
 import type { MotionValue } from "motion/react";
 import { Button } from "./Button";
-import { challenges } from "@/content/events";
 import { pilot } from "@/content/pilot";
 import { totals } from "@/content/results";
-import { formatDate } from "@/lib/format";
 import { GLYPHS, GLYPH_TRANSFORM } from "@/lib/digits";
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
-const DAY = 86_400_000;
 
 /** Foto do hero. Ideal para substituir: close do rosto de capacete, em ação, com fundo escuro e o piloto no terço direito. */
 const PHOTO = {
@@ -21,40 +18,9 @@ const PHOTO = {
   alt: "Enrico, de capacete verde e laranja, à frente do pelotão de karts durante a prova",
 };
 
-/** Próxima etapa, calculada a partir de events.ts. Some sozinha quando não houver etapa futura. */
-function NextChallenge() {
-  const [now, setNow] = useState<number | null>(null);
-  useEffect(() => setNow(Date.now()), []);
-  if (now === null) return null;
-  const next = [...challenges]
-    .filter((c) => new Date(`${c.endDate ?? c.date}T23:59:59-03:00`).getTime() >= now)
-    .sort((a, b) => a.date.localeCompare(b.date))[0];
-  if (!next) return null;
-
-  const start = new Date(`${next.date}T00:00:00-03:00`).getTime();
-  const days = Math.ceil((start - now) / DAY);
-  const when = next.endDate
-    ? `${formatDate(next.date, { day: "numeric" })} a ${formatDate(next.endDate, { day: "numeric", month: "short" })}`
-    : formatDate(next.date, { day: "numeric", month: "short" });
-  const countdown = now >= start ? "em andamento" : days <= 1 ? "amanhã" : `em ${days} dias`;
-  const where = [next.city, next.category].filter(Boolean).join(" · ");
-
-  return (
-    <a href="#desafios" aria-label={`Próximo desafio: ${next.championship}, ${when}, ${where}, ${countdown}. Ver calendário`} className="group block border-y border-white/15 bg-ink/40 px-4 py-3 text-right backdrop-blur-sm transition-colors hover:border-mint/50">
-      <span className="eyebrow block text-[0.65rem] text-mint md:text-xs">Próximo desafio</span>
-      <span className="display mt-1.5 block text-[20px] leading-none md:text-[24px]">{next.championship.replace(/^\d+º /, "").replace(" de Kart", "")}</span>
-      <span className="eyebrow mt-1.5 block text-[0.7rem] text-white/75 md:text-[0.78rem]">
-        {where && <>{where} · </>}
-        {when}
-      </span>
-      <span className="eyebrow mt-1 block text-[0.62rem] text-white/45 md:text-[0.68rem]">{countdown}</span>
-    </a>
-  );
-}
-
 /**
- * Hero da home. Nome como protagonista, foto escura que se dissolve no preto, o 5 como marca d'água no canto oposto ao nome,
- * próximo desafio discreto no canto e indicadores limpos embaixo. A faixa de conquistas vem logo depois (AchievementsStrip).
+ * Hero da home. Nome como protagonista, foto escura que se dissolve no preto, o 5 como marca d'água no canto oposto ao nome
+ * e indicadores limpos embaixo. A faixa de conquistas vem logo depois (AchievementsStrip).
  */
 export function HeroMain() {
   const reduce = useReducedMotion();
@@ -117,13 +83,6 @@ export function HeroMain() {
       {/* 5 como marca d'água no canto oposto ao nome */}
       {five("pointer-events-none absolute bottom-[14%] right-[4%] -z-10 h-[34%] w-auto overflow-visible max-md:hidden", { x: reduce ? 0 : fiveX })}
 
-      {/* próximo desafio */}
-      <div className="absolute inset-x-0 top-[calc(var(--header-h)+0.9rem)] z-20 md:top-[calc(var(--header-h)+1.4rem)]">
-        <div className="mx-auto flex max-w-[1400px] justify-end px-5 md:px-10">
-          <NextChallenge />
-        </div>
-      </div>
-
       {/* nome, subtítulo e CTAs */}
       <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 flex-col justify-end px-5 pb-9 pt-20 md:justify-center md:pb-4 md:px-10 md:pt-6">
         <motion.p className="eyebrow text-[0.8rem] text-mint md:text-sm" initial={reduce ? false : { opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease }}>
@@ -137,9 +96,9 @@ export function HeroMain() {
             </motion.span>
           </span>
           <span className="block overflow-hidden pb-[0.07em] pr-[0.1em]">
-            {/* contorno firme e preenchimento leve: legível sobre o escuro, sem brilho exagerado */}
+            {/* mesmo contorno de antes, agora em branco */}
             <motion.span
-              className="block text-mint/[0.07] [-webkit-text-stroke:1.5px_#00ff9c] [text-shadow:0_0_26px_rgba(0,255,156,0.12)] [filter:drop-shadow(0_0_5px_rgba(0,255,156,0.3))] md:[-webkit-text-stroke:2.5px_#00ff9c]"
+              className="block text-white/[0.07] [-webkit-text-stroke:1.5px_#fff] md:[-webkit-text-stroke:2.5px_#fff]"
               initial={reduce ? false : { y: "105%" }}
               animate={{ y: 0 }}
               transition={{ duration: 0.9, ease, delay: 0.22 }}

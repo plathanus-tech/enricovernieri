@@ -6,7 +6,7 @@ import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { VideoCard } from "./VideoCard";
 import { campaignVideos, sponsors, type Sponsor } from "@/content/sponsors";
-import { site, whatsappLink } from "@/content/site";
+import { whatsappLink } from "@/content/site";
 
 const exposure = [
   { src: "/gear/kart-plotagem.png", alt: "Plotagem do kart número 5, vista de todos os lados", label: "Kart", w: 606, h: 394 },
@@ -17,8 +17,7 @@ const exposure = [
 const offers = [
   { t: "Exposição direta", d: "A marca no kart, no macacão e nas camisetas, em competições, eventos e materiais de comunicação visual." },
   { t: "Presença digital", d: "Postagens dedicadas nas redes sociais, menções em veículos especializados e campanhas digitais." },
-  { t: "Rede de contatos", d: "Participação em eventos e conexão com pessoas e empresas do meio, por meio do networking do piloto." },
-  { t: "Documentário oficial", d: "Previsto na proposta: produção em parceria com a produtora Gabriela Silveira, contando a trajetória do Enrico." },
+  { t: "Rede de contatos", d: "Participação em eventos e conexão com pessoas e empresas do setor por meio do networking do piloto." },
 ];
 
 const presence = [
@@ -166,7 +165,6 @@ export function Sponsors() {
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button href={whatsappLink()} external>Conversar sobre patrocínio</Button>
-                <Button href={site.mediaKit.url} variant="ghost-dark" icon="download" download>Baixar mídia kit</Button>
               </div>
               <p className="mt-4 text-sm text-mute-dark">O contato é feito diretamente com os responsáveis pelo piloto.</p>
             </div>
@@ -174,7 +172,7 @@ export function Sponsors() {
               <p className="eyebrow text-mute-dark">O que a proposta prevê</p>
               <ul className="mt-4 grid gap-px bg-line-dark sm:grid-cols-2">
                 {offers.map((o) => (
-                  <li key={o.t} className="bg-ink p-5">
+                  <li key={o.t} className="bg-ink p-5 sm:[&:last-child:nth-child(odd)]:col-span-2">
                     <p className="display text-2xl text-mint">{o.t}</p>
                     <p className="mt-1 text-sm text-white/75">{o.d}</p>
                   </li>
