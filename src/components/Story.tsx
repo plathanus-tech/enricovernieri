@@ -55,7 +55,7 @@ function ChapterBand({ c, index }: { c: Chapter; index: number }) {
             <h3 id={`cap-${c.id}`} className="display mt-5 text-[clamp(2rem,4.6vw,3.6rem)]">
               {c.title}
             </h3>
-            <p className={`mt-4 max-w-xl text-lg ${dark ? "text-white/85" : "text-mute-light"}`}>{c.text}</p>
+            <p className={`mt-4 max-w-xl text-base md:text-lg ${dark ? "text-white/85" : "text-mute-light"}`}>{c.text}</p>
             {c.facts && (
               <ul className="mt-6 grid max-w-xl gap-2">
                 {c.facts.map((f) => (
@@ -93,7 +93,7 @@ export function Story() {
         <SectionHeading eyebrow="Minha história">
           <span id="historia-title">Volta a volta,<br className="hidden sm:block" /> até aqui</span>
         </SectionHeading>
-        <p className="mt-5 max-w-xl text-lg text-mute-dark">Uma trajetória contada em ordem, do primeiro contato com o kart às conquistas mais recentes.</p>
+        <p className="mt-5 max-w-xl text-base text-mute-dark md:text-lg">Uma trajetória contada em ordem, do primeiro contato com o kart às conquistas mais recentes.</p>
       </div>
 
       <div ref={ref} className="relative">

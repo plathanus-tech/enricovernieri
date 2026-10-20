@@ -142,7 +142,7 @@ function ChapterPanel({ c, x, vw, register, still = false }: { c: Chapter; x: Mo
           <motion.h3 id={`h-${c.id}`} style={{ opacity: titleO, y: titleY }} className="display mt-2 text-2xl md:text-[clamp(1.6rem,min(4.2vw,6.5svh),3.6rem)]">
             {c.title}
           </motion.h3>
-          <motion.p style={{ opacity: textO, y: textY }} className={`mt-3 max-w-md text-[clamp(0.85rem,2.3svh,1.125rem)] leading-snug ${dark ? "text-white/85" : "text-mute-light"}`}>
+          <motion.p style={{ opacity: textO, y: textY }} className={`mt-3 max-w-md text-base md:text-[clamp(0.85rem,2.3svh,1.125rem)] leading-snug ${dark ? "text-white/85" : "text-mute-light"}`}>
             {c.text}
           </motion.p>
           {c.facts && (
@@ -175,7 +175,7 @@ function Opening({ native = false }: { native?: boolean }) {
         <br />
         <span className="text-transparent [-webkit-text-stroke:2px_#fff]">até aqui</span>
       </h2>
-      <p className="mt-6 flex max-w-sm items-center gap-3 text-lg text-white/80">
+      <p className="mt-6 flex max-w-sm items-center gap-3 text-base text-white/80 md:text-lg">
         <span aria-hidden className="inline-flex h-10 w-10 shrink-0 -skew-x-12 items-center justify-center bg-mint text-ink">→</span>
         {native ? "Deslize para o lado para seguir a trajetória, de 2016 até hoje." : "Role a página para seguir a trajetória, de 2016 até hoje."}
       </p>

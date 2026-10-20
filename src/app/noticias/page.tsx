@@ -21,7 +21,7 @@ export default function NewsIndex() {
             <span aria-current="page">Notícias</span>
           </nav>
           <h1 className="display mt-6 text-[clamp(3rem,9vw,7rem)]">Notícias</h1>
-          <p className="mt-4 max-w-xl text-lg text-mute-light">Notícias, histórias e novidades sobre a trajetória do Enrico no automobilismo</p>
+          <p className="mt-4 max-w-xl text-base text-mute-light md:text-lg">Notícias, histórias e novidades sobre a trajetória do Enrico no automobilismo</p>
 
           {items.length > 0 ? (
             <div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

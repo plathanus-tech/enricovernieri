@@ -54,7 +54,7 @@ function Featured({ c }: { c: Challenge }) {
           <TitleLink href={c.href} arrow={false}>{c.championship}</TitleLink>
         </h3>
         {c.stage && <p className="display text-2xl text-white/80">{c.stage}</p>}
-        {where && <p className="text-lg text-white/80">{where}</p>}
+        {where && <p className="text-base text-white/80 md:text-lg">{where}</p>}
         <div className="mt-2 flex flex-wrap gap-2">
           {c.category && <span className="border border-white/40 px-3 py-1 font-display text-base font-bold italic uppercase">{c.category}</span>}
           {c.status && <span className="bg-white px-3 py-1 font-display text-base font-bold italic uppercase text-ink">{c.status}</span>}
@@ -122,7 +122,7 @@ export function Challenges() {
             <div className="relative overflow-hidden bg-ink-2 p-8 md:p-12 lg:col-span-7">
               <p className="eyebrow text-mint">Calendário em preparação</p>
               <p className="display mt-3 text-[clamp(2.2rem,5vw,3.8rem)]">A próxima largada ainda vai ser anunciada</p>
-              <p className="mt-4 max-w-xl text-lg text-white/80">
+              <p className="mt-4 max-w-xl text-base text-white/80 md:text-lg">
                 As etapas e campeonatos da próxima temporada aparecem aqui assim que forem confirmados, com data, kartódromo e categoria.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">

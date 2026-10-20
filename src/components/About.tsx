@@ -291,7 +291,7 @@ function buildTabs(next?: string): Tab[] {
       ],
       body: (
         <>
-          <blockquote className="border-l-4 border-mint pl-4 text-lg leading-snug text-white">“{pilot.creed}”</blockquote>
+          <blockquote className="border-l-4 border-mint pl-4 text-base leading-snug text-white md:text-lg">“{pilot.creed}”</blockquote>
           <p className="mt-4 opacity-75">Seguir evoluindo a cada corrida, conquistar novos desafios e representar com orgulho sua região.</p>
         </>
       ),
@@ -329,7 +329,7 @@ export function About({ nextChallenge, tone = "dark" }: { nextChallenge?: string
           <span>Quem sou</span>
         </p>
         <h2 id="quem-sou-title" className="sr-only">Quem sou</h2>
-        <p className={`mt-5 max-w-xl text-lg ${L ? "text-mute-light" : "text-mute-dark"}`}>Conheça o piloto, sua trajetória, suas conquistas e o sonho que o move a cada corrida.</p>
+        <p className={`mt-5 max-w-xl text-base md:text-lg ${L ? "text-mute-light" : "text-mute-dark"}`}>Conheça o piloto, sua trajetória, suas conquistas e o sonho que o move a cada corrida.</p>
 
         <LayoutGroup>
           <div className="mt-12 flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:gap-8">

@@ -132,7 +132,7 @@ export function Sponsors() {
           <h3 className="eyebrow border-b-2 border-ink pb-3">Conteúdos e campanhas</h3>
           <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-end">
             <p className="display text-4xl md:text-5xl lg:col-span-6">Também diante das câmeras</p>
-            <p className="text-lg text-mute-light lg:col-span-6">
+            <p className="text-base text-mute-light md:text-lg lg:col-span-6">
               O Enrico já participou de campanhas e produziu vídeos para marcas. Aqui estão alguns desses trabalhos, publicados pelas próprias marcas, como portfólio de quem sabe falar com a câmera.
             </p>
           </div>
@@ -163,7 +163,7 @@ export function Sponsors() {
             <div className="lg:col-span-6">
               <p className="eyebrow text-mint">Seja um patrocinador</p>
               <h3 className="display mt-3 text-[clamp(2.6rem,6vw,5rem)]">Faça parte dessa trajetória</h3>
-              <p className="mt-5 max-w-xl text-lg text-white/85">
+              <p className="mt-5 max-w-xl text-base text-white/85 md:text-lg">
                 Patrocinar o Enrico é apoiar o desenvolvimento esportivo de um jovem piloto e associar a sua marca a valores como dedicação, estratégia e superação, ao lado de uma história real que está sendo construída pista a pista.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">

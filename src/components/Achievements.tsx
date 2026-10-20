@@ -108,7 +108,7 @@ export function Achievements() {
         <div className="mt-20 grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4">
             <h3 className="display text-4xl md:text-5xl">Evolução nos campeonatos</h3>
-            <p className="mt-4 text-lg text-mute-light">
+            <p className="mt-4 text-base text-mute-light md:text-lg">
               Do 23º lugar no Brasileiro de 2023 ao vice-campeonato em 2025. O mesmo caminho aparece no Catarinense e no Gaúcho, e em 2026 veio o título paranaense.
             </p>
             <p className="mt-3 text-sm text-mute-light">O traço (–) indica que não há resultado informado nessa temporada.</p>

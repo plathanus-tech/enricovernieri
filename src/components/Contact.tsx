@@ -50,7 +50,7 @@ export function Contact() {
             <br />
             <span className="text-mint">dessa trajetória</span>
           </h2>
-          <p className="mt-6 max-w-xl text-lg text-white/85">
+          <p className="mt-6 max-w-xl text-base text-white/85 md:text-lg">
             Apoie o desenvolvimento de Enrico Vernieri no kartismo. Entre em contato com a equipe responsável para conhecer o projeto e as oportunidades de parceria.
           </p>
 

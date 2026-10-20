@@ -66,7 +66,7 @@ export default async function NewsPage({ params }: { params: Promise<Params> }) 
           </div>
         )}
 
-        <div className="mx-auto mt-10 max-w-3xl space-y-5 px-5 text-lg leading-relaxed md:px-0">
+        <div className="mx-auto mt-10 max-w-3xl space-y-5 px-5 text-base leading-relaxed md:text-lg md:px-0">
           {(item.body ?? []).map((p, i) => (
             <p key={i}>{p}</p>
           ))}
