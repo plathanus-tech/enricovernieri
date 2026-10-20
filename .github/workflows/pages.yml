@@ -35,6 +35,8 @@ jobs:
       # as notícias atuais abrem a matéria original, e o Next exige ao menos uma página gerada por rota dinâmica.
       - name: Remover rotas de teste
         run: rm -rf src/app/hero-lab src/app/heroes src/app/heroes-ln src/app/heroes-ln2 src/app/historia-b src/app/quem-sou-bege src/app/hero-v2 "src/app/noticias/[slug]"
+      - name: Otimizar imagens
+        run: node scripts/optimize-images.mjs
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

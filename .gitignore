@@ -17,3 +17,6 @@ next-env.d.ts
 /*.mp4
 /*.mov
 /*.webm
+
+# versões leves geradas no build do GitHub Pages
+/public/_opt
