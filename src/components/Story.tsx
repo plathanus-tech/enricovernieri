@@ -10,6 +10,7 @@ import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { chapters, type Chapter, type Media } from "@/content/story";
 import { site } from "@/content/site";
+import { withBase } from "@/lib/base-path";
 
 function MediaBlock({ media, tone }: { media: Media; tone: Chapter["tone"] }) {
   if (media.kind === "image")
@@ -23,7 +24,7 @@ function MediaBlock({ media, tone }: { media: Media; tone: Chapter["tone"] }) {
   if (media.kind === "video")
     return (
       <div className="slant relative aspect-video w-full overflow-hidden bg-ink-3">
-        <video src={media.src} poster={media.poster} controls playsInline preload="none" aria-label={media.label} className="h-full w-full object-cover" />
+        <video src={withBase(media.src)} poster={withBase(media.poster)} controls playsInline preload="none" aria-label={media.label} className="h-full w-full object-cover" />
       </div>
     );
   if (media.kind === "none") return null;

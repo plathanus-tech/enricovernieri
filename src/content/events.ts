@@ -26,7 +26,7 @@ export const challenges: Challenge[] = [
     championship: "61º Campeonato Brasileiro de Kart",
     track: "Speed Park Kartódromo Internacional de Birigui",
     city: "Birigui (SP)",
-    category: "Cadete",
+    category: "Mini 2T",
     status: "Inscrições até 09/11",
     href: "https://inscricoes.cba.org.br/pt/eventos/61o-campeonato-brasileiro-de-kart-2026-61o-campeonato-brasileiro-de-kart-2026-",
   },

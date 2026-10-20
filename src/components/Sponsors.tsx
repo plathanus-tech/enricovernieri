@@ -4,7 +4,7 @@ import { Placeholder } from "./Placeholder";
 import { RaceNumber } from "./RaceNumber";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
-import { VideoCard } from "./VideoCard";
+import { VideoCarousel } from "./VideoCarousel";
 import { campaignVideos, sponsors, type Sponsor } from "@/content/sponsors";
 import { whatsappLink } from "@/content/site";
 
@@ -27,8 +27,18 @@ const presence = [
   { v: "30", l: "notícias em portais" },
 ];
 
-// Posição de cada célula no celular (2 colunas), para manter o tabuleiro claro/escuro quando há 5 logos + o convite, que fica sempre por último.
-const mobileOrder = [0, 1, 4, 2, 3, 5];
+/**
+ * Tabuleiro claro/escuro: no computador (3 colunas) o tom alterna a cada célula; no celular (2 colunas) alterna por linha e coluna.
+ * O logo é um arquivo único, preto: nos quadros escuros ele é invertido para branco por CSS (classes literais, para o Tailwind gerar).
+ */
+const tones = (i: number) => {
+  const desktop = i % 2 === 0 ? "L" : "D";
+  const mobile = (Math.floor(i / 2) + (i % 2)) % 2 === 0 ? "L" : "D";
+  return `${mobile}${desktop}` as "LL" | "LD" | "DL" | "DD";
+};
+const cellBg = { LL: "bg-paper-2", LD: "bg-paper-2 md:bg-ink", DL: "bg-ink md:bg-paper-2", DD: "bg-ink" } as const;
+const logoFilter = { LL: "", LD: "md:invert", DL: "invert md:invert-0", DD: "invert" } as const;
+const roleColor = { LL: "text-mint-ink", LD: "text-mint-ink md:text-mint", DL: "text-mint md:text-mint-ink", DD: "text-mint" } as const;
 
 export function Sponsors() {
   const cells: (Sponsor | "cta")[] = [...sponsors];
@@ -48,11 +58,10 @@ export function Sponsors() {
             <ul className="mt-6 grid grid-cols-2 gap-px bg-line-light md:grid-cols-3">
               {cells.map((cell, i) => {
                 // Alterna fundo escuro e claro como um tabuleiro, em 2 colunas (celular) e em 3 (computador).
-                const style = cells.length === 6 ? ({ "--o": mobileOrder[i] } as React.CSSProperties) : undefined;
-                const order = cells.length === 6 ? "[order:var(--o)] md:[order:0]" : "";
+                const t = tones(i);
                 if (cell === "cta")
                   return (
-                    <li key="cta" style={style} className={`flex min-h-40 items-center justify-center bg-mint p-6 text-ink md:min-h-48 ${order}`}>
+                    <li key="cta" className="col-span-2 flex min-h-40 items-center justify-center bg-mint p-6 text-ink md:col-span-1 md:min-h-48">
                       <a href="#contato" className="group text-center">
                         <span className="eyebrow block">Seu logo aqui</span>
                         <span className="display mt-1 block text-3xl">Seja a próxima marca</span>
@@ -61,9 +70,9 @@ export function Sponsors() {
                     </li>
                   );
                 const s = cell;
-                const img = <Image src={s.logo} alt={s.name} width={s.width} height={s.height} style={{ height: s.h, width: "auto" }} className="max-w-full object-contain" />;
+                const img = <Image src={s.logo} alt={s.name} width={s.width} height={s.height} style={{ height: s.h, width: "auto" }} className={`max-w-full object-contain ${logoFilter[t]}`} />;
                 return (
-                  <li key={s.name} style={style} className={`relative flex min-h-40 items-center justify-center p-6 md:min-h-48 ${order} ${s.tone === "dark" ? "bg-ink" : "bg-paper-2"}`}>
+                  <li key={s.name} className={`relative flex min-h-40 items-center justify-center p-6 md:min-h-48 ${cellBg[t]}`}>
                     {s.href ? (
                       <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
                         {img}
@@ -71,7 +80,7 @@ export function Sponsors() {
                     ) : (
                       img
                     )}
-                    {s.role && <span className={`eyebrow absolute left-3 top-3 text-[0.7rem] ${s.tone === "dark" ? "text-mint" : "text-mint-ink"}`}>{s.role}</span>}
+                    {s.role && <span className={`eyebrow absolute left-3 top-3 text-[0.7rem] ${roleColor[t]}`}>{s.role}</span>}
                   </li>
                 );
               })}
@@ -130,13 +139,7 @@ export function Sponsors() {
 
           {campaignVideos.length > 0 ? (
             <>
-              <ul className="mt-10 grid gap-8 md:grid-cols-3">
-                {campaignVideos.map((v) => (
-                  <li key={v.id}>
-                    <VideoCard video={v} />
-                  </li>
-                ))}
-              </ul>
+              <VideoCarousel videos={campaignVideos} />
             </>
           ) : (
             <div className="mt-8 grid gap-4">

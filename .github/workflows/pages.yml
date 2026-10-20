@@ -34,7 +34,7 @@ jobs:
       # Rotas de exploração (noindex) e a página de notícia interna não entram na publicação estática:
       # as notícias atuais abrem a matéria original, e o Next exige ao menos uma página gerada por rota dinâmica.
       - name: Remover rotas de teste
-        run: rm -rf src/app/hero-lab src/app/heroes src/app/heroes-ln src/app/heroes-ln2 src/app/historia-b src/app/quem-sou-bege src/app/v2 "src/app/noticias/[slug]"
+        run: rm -rf src/app/hero-lab src/app/heroes src/app/heroes-ln src/app/heroes-ln2 src/app/historia-b src/app/quem-sou-bege src/app/hero-v2 "src/app/noticias/[slug]"
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

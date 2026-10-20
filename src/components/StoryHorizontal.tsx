@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   motion,
+  useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -12,6 +13,7 @@ import {
 } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "./Button";
+import { LoopVideo } from "./LoopVideo";
 import { Placeholder } from "./Placeholder";
 import { RaceNumber } from "./RaceNumber";
 import { Story } from "./Story";
@@ -34,7 +36,8 @@ function Fact({ p, i, dark, children }: { p: MotionValue<number>; i: number; dar
   );
 }
 
-function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<number>; vw: number; register: (id: string, left: number) => void }) {
+/** `still`: painel da faixa deslizável (celular). O conteúdo aparece completo, sem animações presas à rolagem. */
+function ChapterPanel({ c, x, vw, register, still = false }: { c: Chapter; x: MotionValue<number>; vw: number; register: (id: string, left: number) => void; still?: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const leftRef = useRef(0);
   const dark = c.tone === "dark";
@@ -50,7 +53,10 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
     return () => window.removeEventListener("resize", measure);
   }, [c.id, register]);
 
-  const p = usePanelProgress(x, vw, leftRef);
+  const live = usePanelProgress(x, vw, leftRef);
+  const calm = useMotionValue(0.28);
+  const p = still ? calm : live;
+  const snap = still ? "snap-start" : "";
   const numeralX = useTransform(p, [1, 0], [24, -24]);
   const numeralO = useTransform(p, [1, 0.8, 0.3, 0], [0, 1, 1, 0.25]);
   const titleO = useTransform(p, [0.8, 0.6], [0, 1]);
@@ -64,7 +70,7 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
   // Capítulo só de texto: transição editorial. A "estrada" tracejada cresce em direção ao painel final, sugerindo continuidade.
   if (c.media.kind === "none")
     return (
-      <article ref={ref} aria-labelledby={`h-${c.id}`} className="relative flex h-full w-[90vw] shrink-0 items-center bg-ink px-6 pb-[5.25rem] pt-[calc(var(--header-h)+0.75rem)] text-white md:w-[74vw] md:px-12 lg:w-[62vw]">
+      <article ref={ref} aria-labelledby={`h-${c.id}`} className={`relative flex ${still ? "h-auto pb-[7.5rem]" : "h-full pb-[5.25rem]"} w-[90vw] shrink-0 items-center bg-ink px-6 pt-[calc(var(--header-h)+0.75rem)] text-white md:w-[74vw] md:px-12 lg:w-[62vw] ${snap}`}>
         <div className="w-full">
           <motion.p style={{ opacity: titleO }} className="eyebrow text-mint">
             {c.kicker}
@@ -93,7 +99,7 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
     <article
       ref={ref}
       aria-labelledby={`h-${c.id}`}
-      className={`relative flex h-full w-[90vw] shrink-0 items-center px-6 pb-[5.25rem] pt-[calc(var(--header-h)+0.75rem)] md:w-[74vw] md:px-12 lg:w-[62vw] ${dark ? "bg-ink text-white" : "on-light bg-paper text-ink"}`}
+      className={`relative flex ${still ? "h-auto pb-[7.5rem]" : "h-full pb-[5.25rem]"} w-[90vw] shrink-0 items-center px-6 pt-[calc(var(--header-h)+0.75rem)] md:w-[74vw] md:px-12 lg:w-[62vw] ${snap} ${dark ? "bg-ink text-white" : "on-light bg-paper text-ink"}`}
     >
       <div className="flex w-full flex-col gap-3 md:gap-5">
         {/* decorativo: o ano é lido pelo texto pequeno acima do título */}
@@ -120,6 +126,8 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
                 <motion.div style={{ x: imgX }} className="absolute -inset-x-10 inset-y-0">
                   <Image src={c.media.src} alt={c.media.alt} fill sizes="(min-width:1024px) 30vw, 90vw" className="object-cover" style={{ objectPosition: c.media.position }} />
                 </motion.div>
+              ) : c.media.kind === "video" ? (
+                <LoopVideo src={c.media.src} poster={c.media.poster} label={c.media.label} />
               ) : c.media.kind === "slot" ? (
                 <Placeholder className="h-full w-full">{c.media.note}</Placeholder>
               ) : null}
@@ -153,6 +161,114 @@ function ChapterPanel({ c, x, vw, register }: { c: Chapter; x: MotionValue<numbe
   );
 }
 
+
+/** Abertura da linha do tempo. `native`: versão da faixa deslizável (celular). */
+function Opening({ native = false }: { native?: boolean }) {
+  return (
+    <div className={`flex ${native ? "h-auto snap-start pb-[7.5rem]" : "h-full"} w-[92vw] shrink-0 flex-col justify-center bg-ink px-6 pt-[var(--header-h)] md:w-[58vw] md:px-12`}>
+      <p className="eyebrow flex items-center gap-3 text-mint">
+        <span aria-hidden className="inline-block h-[3px] w-10 bg-current" />
+        Minha história
+      </p>
+      <h2 className="display mt-4 text-[clamp(3rem,9vw,8rem)]">
+        Volta a volta,
+        <br />
+        <span className="text-transparent [-webkit-text-stroke:2px_#fff]">até aqui</span>
+      </h2>
+      <p className="mt-6 flex max-w-sm items-center gap-3 text-lg text-white/80">
+        <span aria-hidden className="inline-flex h-10 w-10 shrink-0 -skew-x-12 items-center justify-center bg-mint text-ink">→</span>
+        {native ? "Deslize para o lado para seguir a trajetória, de 2016 até hoje." : "Role a página para seguir a trajetória, de 2016 até hoje."}
+      </p>
+    </div>
+  );
+}
+
+/** Chamada final da linha do tempo. */
+function Closing({ native = false }: { native?: boolean }) {
+  return (
+    <div className={`relative flex ${native ? "h-auto snap-end pb-[7.5rem]" : "h-full"} w-[92vw] shrink-0 flex-col justify-center overflow-hidden bg-mint px-6 pt-[var(--header-h)] text-ink md:w-[58vw] md:px-12`}>
+      <div aria-hidden className="absolute inset-y-0 left-0 w-3 md:w-4 [background:conic-gradient(#0a0b0a_25%,transparent_0_50%,#0a0b0a_0_75%,transparent_0)_0_0/16px_16px]" />
+      <p className="eyebrow ml-2 md:ml-4">E agora?</p>
+      <h3 className="display ml-2 mt-3 text-[clamp(2.6rem,min(7.5vw,11svh),6.5rem)] md:ml-4">Faça parte da próxima volta</h3>
+      <p className="ml-2 mt-5 max-w-lg text-[clamp(0.95rem,2.4svh,1.2rem)] font-medium leading-snug md:ml-4">
+        Cada etapa é construída com dedicação, apoio e pessoas que acreditam no potencial do Enrico. Faça parte dessa jornada e acompanhe o que vem pela frente.
+      </p>
+      <div className="ml-2 mt-8 flex flex-col gap-3 sm:flex-row md:ml-4">
+        <Button href="#desafios" variant="ink">Próximos desafios</Button>
+        <Button href="#contato" variant="ghost-light">Seja parceiro</Button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Celular: sem rolagem presa. A linha do tempo vira uma faixa que se desliza com o dedo (scroll-snap) e ocupa uma tela de altura,
+ * então a página continua rolando normalmente na vertical. A última chamada ("E agora?") encaixa na borda final da faixa.
+ */
+function StoryNative({ id }: { id: string }) {
+  const scroller = useRef<HTMLDivElement>(null);
+  const lefts = useRef<Record<string, number>>({});
+  const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const x = useMotionValue(0);
+  const register = useCallback((cid: string, left: number) => {
+    lefts.current[cid] = left;
+  }, []);
+
+  const onScroll = () => {
+    const el = scroller.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setProgress(max > 0 ? Math.min(1, el.scrollLeft / max) : 0);
+    // no fim da faixa, o último capítulo é o ativo
+    const atEnd = max > 0 && el.scrollLeft >= max - 4;
+    let idx = 0;
+    chapters.forEach((c, i) => {
+      if ((lefts.current[c.id] ?? Infinity) <= el.scrollLeft + el.clientWidth * 0.5) idx = i;
+    });
+    if (atEnd) idx = chapters.length - 1;
+    setActive((a) => (a === idx ? a : idx));
+  };
+
+  const jump = (i: number) => {
+    const el = scroller.current;
+    if (!el) return;
+    el.scrollTo({ left: lefts.current[chapters[i].id] ?? 0, behavior: "smooth" });
+  };
+
+  return (
+    <section id={id} aria-label="Minha história, linha do tempo" className="relative bg-ink">
+      <div ref={scroller} onScroll={onScroll} className="relative flex min-h-[100svh] snap-x snap-mandatory items-stretch overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <Opening native />
+        {chapters.map((c) => (
+          <ChapterPanel key={c.id} c={c} x={x} vw={375} register={register} still />
+        ))}
+        <Closing native />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-9 mix-blend-difference">
+        <ul aria-label="Ir para o capítulo" className="pointer-events-auto flex gap-1 overflow-x-auto pb-2 text-white">
+          {chapters.map((c, i) => (
+            <li key={c.id} className="shrink-0">
+              <button
+                type="button"
+                onClick={() => jump(i)}
+                aria-current={i === active ? "true" : undefined}
+                className={`min-h-11 px-2.5 font-display text-base font-extrabold italic uppercase ${i === active ? "underline decoration-2 underline-offset-8" : "opacity-60"}`}
+              >
+                {c.numeral ?? c.word}
+                {c.numeral && c.word ? ` ${c.word}` : ""}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div aria-hidden className="h-[3px] w-full bg-white/30">
+          <div style={{ width: `${progress * 100}%` }} className="h-full bg-white" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function StoryHorizontal({ id = "historia" }: { id?: string }) {
   const reduce = useReducedMotion();
   const container = useRef<HTMLDivElement>(null);
@@ -160,9 +276,18 @@ export function StoryHorizontal({ id = "historia" }: { id?: string }) {
   const [dim, setDim] = useState({ vw: 1280, vh: 800, dist: 4000 });
   const lefts = useRef<Record<string, number>>({});
   const [active, setActive] = useState(0);
+  const [native, setNative] = useState(false);
 
   const register = useCallback((id: string, left: number) => {
     lefts.current[id] = left;
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setNative(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   useEffect(() => {
@@ -212,6 +337,7 @@ export function StoryHorizontal({ id = "historia" }: { id?: string }) {
 
   // Movimento reduzido: sem rolagem lateral, usa a linha do tempo vertical.
   if (reduce) return <Story />;
+  if (native) return <StoryNative id={id} />;
 
   return (
     <section id={id} aria-label="Minha história, linha do tempo horizontal">
@@ -223,40 +349,13 @@ export function StoryHorizontal({ id = "historia" }: { id?: string }) {
           </motion.div>
 
           <motion.div ref={track} style={{ x }} className="relative z-10 flex h-full w-max">
-            {/* abertura */}
-            <div className="flex h-full w-[92vw] shrink-0 flex-col justify-center bg-ink px-6 pt-[var(--header-h)] md:w-[58vw] md:px-12">
-              <p className="eyebrow flex items-center gap-3 text-mint">
-                <span aria-hidden className="inline-block h-[3px] w-10 bg-current" />
-                Minha história
-              </p>
-              <h2 className="display mt-4 text-[clamp(3rem,9vw,8rem)]">
-                Volta a volta,
-                <br />
-                <span className="text-transparent [-webkit-text-stroke:2px_#fff]">até aqui</span>
-              </h2>
-              <p className="mt-6 flex max-w-sm items-center gap-3 text-lg text-white/80">
-                <span aria-hidden className="inline-flex h-10 w-10 shrink-0 -skew-x-12 items-center justify-center bg-mint text-ink">→</span>
-                Role a página para seguir a trajetória, de 2016 até hoje.
-              </p>
-            </div>
+            <Opening />
 
             {chapters.map((c) => (
               <ChapterPanel key={c.id} c={c} x={x} vw={dim.vw} register={register} />
             ))}
 
-            {/* fim */}
-            <div className="relative flex h-full w-[92vw] shrink-0 flex-col justify-center overflow-hidden bg-mint px-6 pt-[var(--header-h)] text-ink md:w-[58vw] md:px-12">
-              <div aria-hidden className="absolute inset-y-0 left-0 w-3 md:w-4 [background:conic-gradient(#0a0b0a_25%,transparent_0_50%,#0a0b0a_0_75%,transparent_0)_0_0/16px_16px]" />
-              <p className="eyebrow ml-2 md:ml-4">E agora?</p>
-              <h3 className="display ml-2 mt-3 text-[clamp(2.6rem,min(7.5vw,11svh),6.5rem)] md:ml-4">Faça parte da próxima volta</h3>
-              <p className="ml-2 mt-5 max-w-lg text-[clamp(0.95rem,2.4svh,1.2rem)] font-medium leading-snug md:ml-4">
-                Cada etapa é construída com dedicação, apoio e pessoas que acreditam no potencial do Enrico. Faça parte dessa jornada e acompanhe o que vem pela frente.
-              </p>
-              <div className="ml-2 mt-8 flex flex-col gap-3 sm:flex-row md:ml-4">
-                <Button href="#desafios" variant="ink">Próximos desafios</Button>
-                <Button href="#contato" variant="ghost-light">Seja parceiro</Button>
-              </div>
-            </div>
+            <Closing />
           </motion.div>
 
           {/* trilho de anos + progresso */}

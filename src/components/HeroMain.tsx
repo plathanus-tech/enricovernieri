@@ -14,8 +14,8 @@ const ease = [0.2, 0.8, 0.2, 1] as const;
 
 /** Foto do hero. Ideal para substituir: close do rosto de capacete, em ação, com fundo escuro e o piloto no terço direito. */
 const PHOTO = {
-  src: "/news/portal-palhoca-paranaense.jpg",
-  alt: "Enrico, de capacete verde e laranja, à frente do pelotão de karts durante a prova",
+  src: "/photos/enrico-vernieri-site.jpg",
+  alt: "Enrico, de capacete verde, laranja e azul, no kart número 5, à frente do pelotão de karts durante a prova",
 };
 
 /**
@@ -125,7 +125,7 @@ export function HeroMain() {
           {[
             ["Títulos", `${totals.titles} ${totals.titles === 1 ? "título" : "títulos"}`],
             ["Nas pistas desde", String(pilot.debut.year)],
-            ["Categoria", "Cadete"],
+            ["Categoria", "Mini 2T"],
           ].map(([k, v], i) => (
             <div key={k} className={i ? "pl-4 pr-2 md:pl-8" : "pr-4 md:pr-8"}>
               <dt className="eyebrow text-[0.65rem] text-white/55 md:text-xs">{k}</dt>

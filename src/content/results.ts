@@ -1,14 +1,16 @@
 /**
- * Resultados informados na apresentação do piloto (2022–2025) e, para 2026, na matéria do Portal Palhoça (14/09/2026).
+ * Resultados informados na apresentação do piloto (2022–2024), nos relatórios de atividades esportivas 2025 e 2026 (PIE, atualizado em 02/09/2026)
+ * e, para o título paranaense de 2026, na matéria do Portal Palhoça (14/09/2026).
  * position: 1 = campeão, 2 = vice, n = enésimo colocado.
- * A temporada 2026 está em andamento: acrescentar aqui os próximos resultados (Brasileiro, Open do Brasileiro, Catarinense).
- * Copa Pato-Branquense 2026: vice na 1ª etapa, informado pela família (post do Instagram de 30/05/2026).
+ * A temporada 2026 está em andamento: acrescentar aqui os próximos resultados (Open do Brasileiro e Campeonato Brasileiro).
  */
 export type Result = { year: number; event: string; position: number; /** detalhe curto, ex.: "1ª etapa" */ note?: string };
 
 export const results: Result[] = [
   { year: 2026, event: "Campeonato Paranaense", position: 1 },
-  { year: 2026, event: "Copa Pato-Branquense", note: "1ª etapa", position: 2 },
+  { year: 2026, event: "Campeonato Pato-Branquense", position: 1 },
+  { year: 2026, event: "Campeonato Gaúcho", position: 3 },
+  { year: 2026, event: "Campeonato Sul-Brasileiro", position: 4 },
   { year: 2025, event: "Campeonato Brasileiro", position: 2 },
   { year: 2025, event: "Campeonato Gaúcho", position: 1 },
   { year: 2025, event: "Copa Beto Carrero", position: 1 },
@@ -35,7 +37,8 @@ export const positionLabel = (p: number) =>
 export const totals = {
   titles: results.filter((r) => r.position === 1).length,
   vices: results.filter((r) => r.position === 2).length,
-  podiums: results.filter((r) => r.position <= 3).length,
+  /** Pódios no total, informado pela família. No kart, pódio são os 5 primeiros colocados, em etapas de todas as temporadas (não só os resultados listados acima). */
+  podiums: 24,
   seasons: new Set(results.map((r) => r.year)).size,
 };
 
@@ -47,7 +50,8 @@ export const mainChampionships = [
   "Campeonato Paranaense",
 ] as const;
 
-export const cups = ["Copa Pato-Branquense", "Copa Beto Carrero", "Copa Sicredi Lages", "Copa Velopark", "Copa Ingleses"] as const;
+export const cups = ["Campeonato Pato-Branquense", "Copa Beto Carrero", "Copa Sicredi Lages", "Copa Velopark", "Copa Ingleses"] as const;
 
-export const positionIn = (event: string, year: number) =>
-  results.find((r) => r.event === event && r.year === year)?.position ?? null;
+export const resultIn = (event: string, year: number) => results.find((r) => r.event === event && r.year === year) ?? null;
+
+export const positionIn = (event: string, year: number) => resultIn(event, year)?.position ?? null;

@@ -2,7 +2,9 @@
 export const pilot = {
   born: 2016,
   city: "Palhoça (SC)",
-  startedAtAge: 6,
+  /** Início no kart: junho de 2021, aos 4 anos (informado pela família). */
+  startedAtAge: 4,
+  startedAt: "junho de 2021",
   trainingSince: 2021,
   debut: { year: 2022, event: "Copa Ingleses", category: "Mirim", position: 4 },
   inTheMainChampionshipsSince: 2023,

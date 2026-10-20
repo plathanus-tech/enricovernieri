@@ -1,4 +1,4 @@
-import { positionIn, positionLabel } from "@/content/results";
+import { positionLabel, resultIn } from "@/content/results";
 
 /**
  * Seleção curta de feitos que servem de "assinatura" da trajetória. Cada item é buscado em results.ts (nada é digitado à mão):
@@ -11,16 +11,15 @@ const PICKS = [
   { event: "Campeonato Gaúcho", year: 2025 },
   { event: "Copa Beto Carrero", year: 2025 },
   { event: "Copa Sicredi Lages", year: 2025 },
-  { event: "Copa Pato-Branquense", year: 2026, note: "1ª etapa" },
+  { event: "Campeonato Pato-Branquense", year: 2026 },
   { event: "Copa Beto Carrero", year: 2024 },
   { event: "Copa Velopark", year: 2023 },
 ] as const;
 
 const items = PICKS.flatMap((p) => {
-  const pos = positionIn(p.event, p.year);
-  if (pos === null || pos > 2) return [];
-  const note = "note" in p ? ` (${p.note})` : "";
-  return [`${positionLabel(pos)} ${p.event.replace("Campeonato ", "")} ${p.year}${note}`];
+  const r = resultIn(p.event, p.year);
+  if (!r || r.position > 2) return [];
+  return [`${positionLabel(r.position)} ${p.event.replace("Campeonato ", "")} ${p.year}`];
 });
 
 function Cross() {

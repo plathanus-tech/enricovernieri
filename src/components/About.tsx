@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { RaceNumber } from "./RaceNumber";
-import { Placeholder } from "./Placeholder";
 import { pilot } from "@/content/pilot";
 import { site } from "@/content/site";
+import { withBase } from "@/lib/base-path";
 
 type Slot = { label: string; value: ReactNode };
 type Tab = {
@@ -14,12 +14,193 @@ type Tab = {
   label: string;
   title: string;
   /** `placeholder`: enquanto `site.showPlaceholders` estiver ligado, mostra um aviso pedindo a foto no lugar de `src`. */
-  image: { src: string; alt: string; position: string; placeholder?: string };
+  image: { src: string; alt: string; position: string; placeholder?: string; /** vídeo no lugar da foto: `src` vira a imagem de capa (poster) */ video?: { src: string; label: string } };
   slots?: Slot[];
   body: ReactNode;
 };
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
+
+/** Vídeo curto no lugar da foto, com o mesmo tratamento em preto e branco. Começa parado, sem som; o botão alterna reproduzir e pausar. */
+function TabVideo({ src, poster, label, position }: { src: string; poster: string; label: string; position: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) void v.play();
+    else v.pause();
+  };
+  return (
+    <div className="absolute inset-0">
+      <video
+        ref={ref}
+        src={withBase(src)}
+        poster={withBase(poster)}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={label}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        className="h-full w-full object-cover grayscale contrast-[1.05]"
+        style={{ objectPosition: position }}
+      />
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={playing ? "Pausar vídeo" : "Reproduzir vídeo"}
+        className="absolute left-5 top-5 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-ink/45 text-white backdrop-blur-sm transition-colors hover:border-mint hover:text-mint"
+      >
+        <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+          {playing ? <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /> : <path d="M8 5.5v13l11-6.5z" />}
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+type PrepItem =
+  | { kind: "video"; src: string; poster: string; label: string; alt: string; position: string }
+  | { kind: "image"; src: string; alt: string; position: string };
+
+/** Miniaturas da aba "Preparação". A foto fica no meio, entre os dois vídeos de fisioterapia. */
+const prep: PrepItem[] = [
+  {
+    kind: "video",
+    src: "/videos/fisioterapia-1.mp4",
+    poster: "/videos/fisioterapia-1-poster.jpg",
+    label: "Vídeo: Enrico em exercícios de fisioterapia esportiva, com luzes coloridas",
+    alt: "Enrico sentado na maca de fisioterapia, tocando botões que acendem em cores diferentes",
+    position: "70% 50%",
+  },
+  {
+    kind: "image",
+    src: "/photos/preparacao-enrico.jpg",
+    alt: "Enrico, de camiseta roxa e preta, ao lado de um homem de boné da Reis Motorsports, os dois olhando atentos para a pista",
+    position: "40% 50%",
+  },
+  {
+    kind: "video",
+    src: "/videos/fisioterapia-2.mp4",
+    poster: "/videos/fisioterapia-2-poster.jpg",
+    label: "Vídeo: Enrico pegando bastões coloridos soltos no ar, em um exercício de reflexo",
+    alt: "Enrico olhando para cima, de braços abertos, durante um exercício de reflexo com bastões coloridos",
+    position: "30% 50%",
+  },
+];
+
+/** Miniaturas da aba "Fora das pistas": tênis de mesa, bicicleta e taekwondo. */
+const fora: PrepItem[] = [
+  {
+    kind: "video",
+    src: "/videos/tenis-de-mesa.mp4",
+    poster: "/videos/tenis-de-mesa-poster.jpg",
+    label: "Vídeo: Enrico jogando tênis de mesa em casa",
+    alt: "Enrico segurando uma raquete de tênis de mesa e uma bolinha laranja, em uma sala",
+    position: "8% 50%",
+  },
+  {
+    kind: "video",
+    src: "/videos/bicicleta.mp4",
+    poster: "/videos/bicicleta-poster.jpg",
+    label: "Vídeo: Enrico andando de bicicleta em uma rua",
+    alt: "Enrico, de capacete e casaco verde, visto de costas, andando de bicicleta em uma rua",
+    position: "50% 50%",
+  },
+  {
+    kind: "video",
+    src: "/videos/taekwondo-aula.mp4",
+    poster: "/videos/taekwondo-aula-poster.jpg",
+    label: "Vídeo: Enrico em uma aula de taekwondo, quebrando uma tábua com um chute",
+    alt: "Enrico de kimono dando um chute em uma tábua segurada pelo instrutor, em uma aula de taekwondo",
+    position: "45% 50%",
+  },
+];
+
+/** Miniaturas clicáveis; ao clicar, a foto ou o vídeo abre ampliado numa janela (dialog nativo: Esc e clique fora fecham). */
+function MediaGallery({ items, label }: { items: PrepItem[]; label: string }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const [open, setOpen] = useState<PrepItem | null>(null);
+
+  useEffect(() => {
+    const d = dialog.current;
+    if (!d) return;
+    if (open && !d.open) d.showModal();
+    if (!open && d.open) d.close();
+  }, [open]);
+
+  useEffect(() => {
+    if (open?.kind === "video") void video.current?.play().catch(() => {});
+  }, [open]);
+
+  return (
+    <>
+      <ul role="group" aria-label={label} className="mt-5 grid grid-cols-3 gap-2 md:gap-3">
+        {items.map((it) => (
+          <li key={it.src}>
+            <button
+              type="button"
+              onClick={() => setOpen(it)}
+              aria-label={it.kind === "video" ? `Assistir ampliado: ${it.label}` : `Ver ampliada: ${it.alt}`}
+              className="group relative block aspect-[4/5] w-full overflow-hidden bg-ink-3 focus-visible:outline-offset-4"
+            >
+              <Image
+                src={it.kind === "video" ? it.poster : it.src}
+                alt=""
+                fill
+                sizes="(min-width:1024px) 12vw, 28vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                style={{ objectPosition: it.position }}
+              />
+              {it.kind === "video" && (
+                <span aria-hidden className="absolute bottom-2 left-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/50 bg-ink/55 text-white backdrop-blur-sm transition-colors group-hover:border-mint group-hover:text-mint">
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor">
+                    <path d="M8 5.5v13l11-6.5z" />
+                  </svg>
+                </span>
+              )}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <dialog
+        ref={dialog}
+        aria-label={open ? (open.kind === "video" ? open.label : open.alt) : "Mídia ampliada"}
+        onClose={() => setOpen(null)}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setOpen(null);
+        }}
+        className="m-auto max-h-[92svh] w-[min(92vw,720px)] overflow-visible bg-transparent p-0 text-white backdrop:bg-black/85"
+      >
+        {open && (
+          <div className="relative">
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setOpen(null)}
+              aria-label="Fechar"
+              className="absolute -top-12 right-0 inline-flex h-10 w-10 items-center justify-center border border-white/40 text-white transition-colors hover:border-mint hover:text-mint"
+            >
+              <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M5 5l14 14M19 5 5 19" />
+              </svg>
+            </button>
+            {open.kind === "video" ? (
+              <video ref={video} src={withBase(open.src)} poster={withBase(open.poster)} controls playsInline loop aria-label={open.label} className="mx-auto max-h-[85svh] w-auto max-w-full bg-black" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={withBase(open.src)} alt={open.alt} className="mx-auto max-h-[85svh] w-auto max-w-full" />
+            )}
+          </div>
+        )}
+      </dialog>
+    </>
+  );
+}
 
 function buildTabs(next?: string): Tab[] {
   return [
@@ -31,12 +212,12 @@ function buildTabs(next?: string): Tab[] {
       slots: [
         { label: "Nascido em", value: pilot.born },
         { label: "Cidade", value: "Palhoça (SC)" },
-        { label: "Categoria", value: "Cadete" },
-        { label: "Treinando desde", value: pilot.trainingSince },
+        { label: "Categoria", value: "Mini 2T" },
+        { label: "Treinando desde", value: pilot.startedAt },
       ],
       body: (
         <p>
-          Piloto de kart de Palhoça (SC). A paixão pelo automobilismo começou cedo, aos {pilot.startedAtAge} anos, e desde {pilot.trainingSince} ele treina com dedicação, sempre buscando evoluir e acelerar rumo aos seus sonhos.
+          Piloto de kart de Palhoça (SC). A paixão pelo automobilismo começou cedo, aos {pilot.startedAtAge} anos, e desde {pilot.startedAt} ele treina com dedicação, sempre buscando evoluir e acelerar rumo aos seus sonhos.
         </p>
       ),
     },
@@ -44,7 +225,7 @@ function buildTabs(next?: string): Tab[] {
       id: "pista",
       label: "Na pista",
       title: "Evolução volta a volta",
-      image: { src: "/photos/kart-action-1.png", alt: "Enrico pilotando o kart número 5 em uma curva da pista (foto em preto e branco)", position: "60% 50%" },
+      image: { src: "/photos/evolucao-enrico.jpg", alt: "Enrico, de capacete verde e laranja, pilotando o kart verde número 5 em uma curva da pista, com outros karts logo atrás", position: "38% 60%" },
       slots: [
         { label: "Estreia", value: `${pilot.debut.year}, ${pilot.debut.event}` },
         { label: "Grandes campeonatos", value: `Desde ${pilot.inTheMainChampionshipsSince}` },
@@ -66,13 +247,18 @@ function buildTabs(next?: string): Tab[] {
       id: "fora",
       label: "Fora das pistas",
       title: "Uma criança em formação",
-      image: { src: "/photos/portrait-2.png", alt: "Enrico de capacete e macacão, de braços cruzados, em pé entre os karts no paddock (foto em preto e branco)", position: "50% 30%", placeholder: "Foto espontânea do Enrico praticando taekwondo" },
+      image: {
+        src: "/videos/taekwondo-poster.jpg",
+        alt: "Enrico, de cabelo curto, aplicando um chute no ar durante um treino de taekwondo com um colega em um tatame",
+        position: "50% 55%",
+        video: { src: "/videos/taekwondo.mp4", label: "Vídeo: Enrico praticando taekwondo com um colega em um tatame" },
+      },
       body: (
         <>
           <p>
             Aos poucos, o kart também ensina a lidar com a pressão, a frustração e a emoção das conquistas. A cada experiência, Enrico amadurece, com a família sempre por perto, apoiando cada etapa dessa jornada.
           </p>
-          <Placeholder className="mt-4">Hobbies, escola e o que ele gosta de fazer. Texto na voz do Enrico, aprovado pelos responsáveis.</Placeholder>
+          <MediaGallery items={fora} label="Vídeos de fora das pistas" />
         </>
       ),
     },
@@ -88,9 +274,9 @@ function buildTabs(next?: string): Tab[] {
       body: (
         <>
           <p>
-            No Paranaense de 2026, os treinos foram difíceis e ele largou apenas em 7º. Na corrida, foi subindo: terminou a primeira bateria em 3º, venceu a segunda e a final.
+            A preparação para o Paranaense de 2026 exigiu dedicação e ajustes para enfrentar uma etapa desafiadora. Mesmo largando em 7º lugar, Enrico evoluiu ao longo das corridas: terminou a primeira bateria em 3º, venceu a segunda e conquistou a vitória na final.
           </p>
-          <Placeholder className="mt-4">Fotos ou vídeo curto de treino e concentração antes da largada.</Placeholder>
+          <MediaGallery items={prep} label="Fotos e vídeos de preparação" />
         </>
       ),
     },
@@ -98,7 +284,7 @@ function buildTabs(next?: string): Tab[] {
       id: "sonho",
       label: "O sonho",
       title: "Para onde ele vai",
-      image: { src: "/photos/kart-action-2.png", alt: "Enrico contornando uma curva com o kart número 5, de capacete branco (foto em preto e branco)", position: "55% 55%" },
+      image: { src: "/photos/para-onde-vai-enrico.jpg", alt: "Enrico, de capacete verde e laranja, ergue o punho fechado a bordo do kart número 5, em uma curva da pista", position: "42% 55%" },
       slots: [
         { label: "Ídolo", value: pilot.idol },
         ...(next ? [{ label: "Próximo desafio", value: next }] : []),
@@ -196,8 +382,10 @@ export function About({ nextChallenge, tone = "dark" }: { nextChallenge?: string
                             {tab.image.placeholder}
                           </div>
                         </div>
+                      ) : tab.image.video ? (
+                        <TabVideo src={tab.image.video.src} poster={tab.image.src} label={tab.image.video.label} position={tab.image.position} />
                       ) : (
-                        <Image src={tab.image.src} alt={tab.image.alt} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover" style={{ objectPosition: tab.image.position }} />
+                        <Image src={tab.image.src} alt={tab.image.alt} fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover grayscale" style={{ objectPosition: tab.image.position }} />
                       )}
                     </motion.div>
                   </AnimatePresence>

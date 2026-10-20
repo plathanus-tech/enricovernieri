@@ -54,6 +54,7 @@ export function VideoCard({ video }: { video: CampaignVideo }) {
                 <span className="display pr-20 text-[clamp(2.4rem,4.4vw,3.4rem)] leading-[0.9]">{video.brand}</span>
               </span>
             )}
+            {video.poster && video.posterDim ? <span aria-hidden className="absolute inset-0" style={{ backgroundColor: `rgb(10 11 10 / ${video.posterDim})` }} /> : null}
             {video.poster && <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />}
             <span aria-hidden className="absolute bottom-5 right-5 flex h-14 w-14 -skew-x-12 items-center justify-center bg-mint text-ink transition-transform group-hover:scale-110">
               <svg viewBox="0 0 24 24" className="h-6 w-6 skew-x-12" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>

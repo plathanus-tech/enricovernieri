@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Manrope } from "next/font/google";
 import { Header } from "@/components/Header";
 import { NextChallengeChip } from "@/components/NextChallengeChip";
+import { ScrollTrack } from "@/components/ScrollTrack";
 import { challenges } from "@/content/events";
 import { site } from "@/content/site";
 import "./globals.css";
@@ -46,6 +47,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Header />
         <NextChallengeChip challenges={challenges} />
+        {/* barra de rolagem com trilho de pista e kart (só com mouse; no celular, a barra nativa) */}
+        <ScrollTrack force />
         <main id="conteudo">{children}</main>
       </body>
     </html>

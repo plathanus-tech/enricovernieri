@@ -84,7 +84,7 @@ export function Achievements() {
               ))}
             </Reveal>
             <p className="max-w-xl text-sm text-mute-light">
-              Totais calculados sobre os resultados informados de 2022 a 2026 (lista completa abaixo). A temporada 2026 está em andamento e será atualizada a cada etapa.
+              Títulos e vice-campeonatos contados sobre os resultados informados de 2022 a 2026 (lista completa abaixo). No kart, pódio são os 5 primeiros colocados, e o total de pódios foi informado pela família. A temporada 2026 está em andamento e será atualizada a cada etapa.
             </p>
             <Reveal variant="wipe">
               <figure>
@@ -114,7 +114,7 @@ export function Achievements() {
           </div>
           <div className="overflow-x-auto lg:col-span-8" role="region" aria-label="Tabela de posições por campeonato" tabIndex={0}>
             <table className="w-full min-w-[520px] border-collapse">
-              <caption className="sr-only">Posição final do Enrico nos principais campeonatos, de 2023 a 2025</caption>
+              <caption className="sr-only">Posição final do Enrico nos principais campeonatos, de 2023 a 2026</caption>
               <thead>
                 <tr className="border-b-2 border-ink">
                   <th scope="col" className="eyebrow py-3 text-left text-mute-light">Campeonato</th>

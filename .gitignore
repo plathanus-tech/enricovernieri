@@ -14,3 +14,6 @@ next-env.d.ts
 /*.webp
 /*.avif
 /*.svg
+/*.mp4
+/*.mov
+/*.webm
