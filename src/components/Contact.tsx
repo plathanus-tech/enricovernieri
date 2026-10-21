@@ -127,9 +127,27 @@ export function Contact() {
             </a>
           </div>
         </div>
-        <p className="mx-auto mt-10 max-w-[1400px] px-5 text-xs text-mute-dark md:px-10">
-          © {new Date().getFullYear()} Enrico Vernieri. Todos os direitos reservados. Fotografias e marcas pertencem aos respectivos titulares.
-        </p>
+        <div className="mx-auto mt-10 flex max-w-[1400px] flex-col gap-5 px-5 md:flex-row md:items-center md:justify-between md:px-10">
+          <p className="text-xs text-mute-dark">
+            © {new Date().getFullYear()} Enrico Vernieri. Todos os direitos reservados. Fotografias e marcas pertencem aos respectivos titulares.
+          </p>
+          <a
+            href="https://www.plathanus.com.br/pt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex shrink-0 items-center gap-3 text-xs text-mute-dark transition-colors hover:text-white"
+          >
+            <span>Site desenvolvido pela</span>
+            <Image
+              src="/sponsors/mono/plathanus.png"
+              alt="Plathanus"
+              width={3671}
+              height={600}
+              className="h-5 w-auto opacity-60 brightness-0 invert transition-opacity group-hover:opacity-100"
+            />
+            <span className="sr-only">(abre em nova aba)</span>
+          </a>
+        </div>
       </footer>
     </>
   );
