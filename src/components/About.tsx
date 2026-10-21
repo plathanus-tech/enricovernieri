@@ -274,7 +274,7 @@ function buildTabs(next?: string): Tab[] {
       body: (
         <>
           <p>
-            A preparação para o Paranaense de 2026 exigiu dedicação e ajustes para enfrentar uma etapa desafiadora. Mesmo largando em 7º lugar, Enrico evoluiu ao longo das corridas: terminou a primeira bateria em 3º, venceu a segunda e conquistou a vitória na final.
+            A preparação de Enrico se apoia em três pilares: técnico, mental e físico. Na pista, a equipe Reis oferece todo o suporte técnico durante os treinos e as competições. O trabalho mental conta com o acompanhamento da parapsicóloga esportiva Marcia Silva. Já a preparação física combina os treinos de taekwondo na MAS Pedra Branca com o acompanhamento do fisioterapeuta Matheus Warmling. Um trabalho em equipe que contribui para sua evolução dentro e fora das pistas.
           </p>
           <MediaGallery items={prep} label="Fotos e vídeos de preparação" />
         </>
