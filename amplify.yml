@@ -1,0 +1,22 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm use 22
+        - npm ci
+        # Mesmas etapas do .github/workflows/pages.yml: rotas de teste e a página de notícia interna não entram no export estático
+        - rm -rf src/app/hero-lab src/app/heroes src/app/heroes-ln src/app/heroes-ln2 src/app/historia-b src/app/quem-sou-bege src/app/hero-v2 "src/app/noticias/[slug]"
+        - node scripts/optimize-images.mjs
+    build:
+      commands:
+        # GITHUB_PAGES=true só liga o output: "export" e o image-loader custom; sem NEXT_PUBLIC_BASE_PATH o site fica na raiz do domínio
+        - GITHUB_PAGES=true npm run build
+  artifacts:
+    baseDirectory: out
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
