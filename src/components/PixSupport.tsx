@@ -7,9 +7,9 @@ import { withBase } from "@/lib/base-path";
 const brl = (n: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(n);
 
 /**
- * Botão secundário "Apoiar com Pix" + janela (dialog nativo) para escolher o valor e pagar por QR Code ou Pix copia e cola.
+ * Botão secundário "Apoiar com Pix" + janela (dialog nativo) para escolher o valor e pagar por QR Code ou pelo link da cobrança.
  * Contribuição espontânea: o texto deixa claro que não é patrocínio nem parceria comercial.
- * Os dados (QR Code e código por valor) vêm de src/content/pix.ts.
+ * Os dados (QR Code e link por valor) vêm de src/content/pix.ts.
  */
 export function PixSupport() {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -19,7 +19,7 @@ export function PixSupport() {
   const [copied, setCopied] = useState(false);
   const group = useId();
 
-  // Sempre derivado do valor selecionado: QR Code e código nunca vêm de opções diferentes.
+  // Sempre derivado do valor selecionado: QR Code e link nunca vêm de opções diferentes.
   const selected = pixOptions.find((o) => o.id === selectedId) ?? pixOptions[0];
   const ready = pixReady(selected);
 
@@ -115,7 +115,7 @@ export function PixSupport() {
 
           <fieldset className="mt-6">
             <legend className="eyebrow text-mute-dark">Escolha um valor</legend>
-            <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {pixOptions.map((o) => (
                 <label key={o.id} className="cursor-pointer">
                   <input
@@ -163,7 +163,7 @@ export function PixSupport() {
                 </p>
               ) : (
                 <p key={selected.id} className="mt-2 border-2 border-dashed border-white/35 p-3 text-sm text-mute-dark">
-                  Código provisório: o Pix copia e cola deste valor ainda não foi configurado.
+                  Provisório: o Pix copia e cola deste valor ainda não foi configurado.
                 </p>
               )}
               <button
@@ -174,6 +174,11 @@ export function PixSupport() {
               >
                 Copiar código Pix
               </button>
+              {ready && selected.url && (
+                <a href={selected.url} target="_blank" rel="noopener noreferrer" className="mt-3 block text-sm text-white/85 underline underline-offset-4 hover:text-mint">
+                  Abrir a cobrança no navegador<span className="sr-only"> (abre em nova aba)</span>
+                </a>
+              )}
               <p role="status" aria-live="polite" className="mt-2 min-h-6 text-sm">
                 {!ready ? <span className="text-mute-dark">O pagamento via Pix estará disponível em breve.</span> : copied ? <span className="text-mint">Código Pix copiado!</span> : null}
               </p>
