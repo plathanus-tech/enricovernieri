@@ -138,7 +138,9 @@ function PurchaseDialog({ openState, onClose }: { openState: boolean; onClose: (
   const pixReady = Boolean(bookPix.code);
   const apiReady = Boolean(orderApiUrl);
   // sem API de pedidos ou sem Pix configurado, a compra não abre: ninguém deve pagar sem o pedido ser registrado
-  const available = apiReady && pixReady;
+  // Só no `npm run dev` (nunca no site publicado): libera o fluxo para testar o visual, sem enviar nada a ninguém.
+  const devPreview = process.env.NODE_ENV === "development" && !apiReady;
+  const available = (apiReady || devPreview) && pixReady;
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const show = (errors: object, k: string) => (touched[k] ? (errors as Record<string, string | undefined>)[k] : undefined) ?? (serverErrors as Record<string, string | undefined>)[k];
 
@@ -261,9 +263,15 @@ function PurchaseDialog({ openState, onClose }: { openState: boolean; onClose: (
   };
 
   const submit = async () => {
-    if (submitting || !step1Ok || !step2Ok || !pixReady || !apiReady) return;
+    if (submitting || !step1Ok || !step2Ok || !pixReady || !available) return;
     setSubmitting(true);
     setApiError("");
+    if (devPreview) {
+      setOrderId("CZ-TESTE-LOCAL");
+      setStep("done");
+      setSubmitting(false);
+      return;
+    }
     const payload: OrderRequest = {
       idempotencyKey: idempotencyKey.current,
       buyer: { ...buyer, name: buyer.name.trim(), email: buyer.email.trim() },
@@ -334,6 +342,10 @@ function PurchaseDialog({ openState, onClose }: { openState: boolean; onClose: (
               </button>
             </div>
           </div>
+        )}
+
+        {devPreview && (
+          <p className="mt-3 border border-[#ffd27a]/60 p-2 text-xs text-[#ffd27a]">Modo de teste local: nenhum pedido é enviado nem gravado.</p>
         )}
 
         {/* progresso */}
@@ -532,7 +544,7 @@ function PurchaseDialog({ openState, onClose }: { openState: boolean; onClose: (
             </p>
 
             {!pixReady && <p className="text-sm text-[#ffd27a]">O pagamento do livro ainda não está disponível. Volte em breve.</p>}
-            {pixReady && !apiReady && <p className="text-sm text-[#ffd27a]">O registro de pedidos ainda não está ativo neste site. Volte em breve.</p>}
+            
             {apiError && (
               <p role="alert" className="border border-[#ff9b9b]/60 p-3 text-sm text-[#ff9b9b]">
                 {apiError}
@@ -543,7 +555,7 @@ function PurchaseDialog({ openState, onClose }: { openState: boolean; onClose: (
               <button type="button" onClick={() => goto(2)} disabled={submitting} className={btnSecondary}>
                 Voltar
               </button>
-              <button type="button" onClick={submit} disabled={!pixReady || !apiReady || submitting} className={btnPrimary}>
+              <button type="button" onClick={submit} disabled={!available || submitting} className={btnPrimary}>
                 {submitting ? "Registrando…" : "Concluir pedido"}
               </button>
             </div>
