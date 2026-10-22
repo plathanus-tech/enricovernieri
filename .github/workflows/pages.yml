@@ -24,6 +24,8 @@ jobs:
       GITHUB_PAGES: "true"
       NEXT_PUBLIC_BASE_PATH: /enricovernieri
       NEXT_PUBLIC_SITE_URL: https://plathanus-tech.github.io/enricovernieri
+      # endereço da API de pedidos do livro (backend/README.md); vazio = compra desativada
+      NEXT_PUBLIC_ORDER_API_URL: ${{ vars.ORDER_API_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

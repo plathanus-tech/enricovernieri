@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { About } from "./About";
 import { Achievements } from "./Achievements";
+import { BookSection } from "./BookSection";
 import { Challenges } from "./Challenges";
 import { Contact } from "./Contact";
 import { NewsSection } from "./News";
@@ -28,6 +29,7 @@ export function HomePage({ hero, aboutTone = "dark" }: { hero: ReactNode; aboutT
       <Challenges />
       <Sponsors />
       <NewsSection />
+      <BookSection />
       <Contact />
     </>
   );

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Manrope } from "next/font/google";
+import { BookPurchaseProvider } from "@/components/BookPurchase";
 import { Header } from "@/components/Header";
 import { NextChallengeChip } from "@/components/NextChallengeChip";
 import { ScrollTrack } from "@/components/ScrollTrack";
@@ -49,7 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <NextChallengeChip challenges={challenges} />
         {/* barra de rolagem com trilho de pista e kart (só com mouse; no celular, a barra nativa) */}
         <ScrollTrack force />
-        <main id="conteudo">{children}</main>
+        <BookPurchaseProvider>
+          <main id="conteudo">{children}</main>
+        </BookPurchaseProvider>
       </body>
     </html>
   );

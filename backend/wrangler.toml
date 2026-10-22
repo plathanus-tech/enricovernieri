@@ -1,0 +1,16 @@
+# API de pedidos do livro (Cloudflare Worker). Passo a passo em backend/README.md.
+name = "curva-zero-pedidos"
+main = "worker.ts"
+compatibility_date = "2026-01-01"
+
+[vars]
+# origem do site (sem barra no fim e sem o caminho): é a única que a API aceita
+ALLOWED_ORIGIN = "https://plathanus-tech.github.io"
+PRICE_CENTS = "4990"
+# preencher com o e-mail do responsável pela venda e o remetente verificado no Resend
+OWNER_EMAIL = ""
+MAIL_FROM = ""
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "COLE_AQUI_O_ID_DO_KV"
