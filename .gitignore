@@ -20,3 +20,7 @@ next-env.d.ts
 
 # versões leves geradas no build do GitHub Pages
 /public/_opt
+
+# API de pedidos: pacote gerado e variáveis locais
+/backend/dist
+.env*.local
